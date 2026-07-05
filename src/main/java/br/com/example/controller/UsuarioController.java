@@ -21,7 +21,7 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Login e senha são obrigatórios.");
         }
         
-        boolean sucesso = usuarioDAO.cadastrar(u);
+        boolean sucesso = usuarioDAO.salvar(u);
         
         if (sucesso) {
             return ResponseEntity.ok("Usuário cadastrado com sucesso!");
@@ -36,7 +36,7 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Login e senha são obrigatórios.");
         }
         
-        Usuario logado = usuarioDAO.login(u.getLogin(), u.getSenha());
+        Usuario logado = usuarioDAO.autenticar(u.getLogin(), u.getSenha());
         
         if (logado != null) {
             // Retorna os dados do usuário em JSON (sucesso 200) para o HTML salvar no sessionStorage

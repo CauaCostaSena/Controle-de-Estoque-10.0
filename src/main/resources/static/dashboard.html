@@ -3,606 +3,265 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StockControl – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
+  <title>StockControl – Visão Geral</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:       #0f1117;
-      --surface:  #181c27;
-      --surface2: #1e2336;
-      --border:   #2a2f40;
-      --accent:   #4f6ef7;
-      --accent-h: #6b85ff;
-      --text:     #e8eaf0;
-      --muted:    #7a8099;
-      --error:    #f25c5c;
-      --success:  #3ecf8e;
-      --warning:  #f2b35c;
-      --radius:   12px;
+      --bg: #0f172a; --surface: #1e293b; --surface-hover: #334155;
+      --border: #334155; --text: #f8fafc; --muted: #94a3b8;
+      --primary: #6366f1; --primary-hover: #4f46e5; --danger: #ef4444; 
+      --success: #10b981; --warning: #f59e0b;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+    
+    /* BARRA LATERAL */
+    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px; height: 100vh; }
+    .sidebar .logo { font-size: 20px; font-weight: bold; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+    .sidebar .logo i { color: var(--primary); font-size: 28px; }
+    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .menu a { text-decoration: none; color: var(--muted); padding: 12px 16px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: all 0.2s ease; }
+    .menu a:hover { background: var(--surface-hover); color: var(--text); padding-left: 20px; }
+    .menu a.active { background: var(--surface-hover); color: var(--text); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; }
+    
+    /* CONTEÚDO PRINCIPAL */
+    .main-content { flex: 1; padding: 32px 40px; overflow-y: auto; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .header { margin-bottom: 32px; }
+    .header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+    .header p { color: var(--muted); font-size: 14px; }
 
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-    }
+    /* CARDS DE RESUMO GERAL */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+    .card { background: var(--surface); border: 1px solid var(--border); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 16px; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-2px); }
+    .card .icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .card .icon.blue { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+    .card .icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+    .card .icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+    .card .icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+    .card-info .title { font-size: 12px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
+    .card-info .value { font-size: 20px; font-weight: bold; }
 
-    /* ── TOPBAR ── */
-    .topbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px;
-      height: 60px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon {
-      width: 32px; height: 32px; background: var(--accent);
-      border-radius: 8px; display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-    }
-    .brand-name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; }
+    /* GRID PARA TABELAS DA DASHBOARD */
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; }
+    .panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    
+    /* LISTAS DINÂMICAS */
+    .list-container { display: flex; flex-direction: column; gap: 0; }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .item-info { display: flex; flex-direction: column; gap: 4px; }
+    .item-name { font-weight: 500; font-size: 14px; }
+    .item-sub { color: var(--muted); font-size: 12px; }
+    
+    .badge-alert { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .badge-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .badge-ok { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
 
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .user-badge {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; color: var(--muted);
-    }
-    .user-avatar {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), #a259f7);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #fff;
-    }
-
-    .btn-logout {
-      font-size: 12px; color: var(--muted);
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 8px; padding: 6px 14px;
-      cursor: pointer; font-family: 'Inter', sans-serif;
-      transition: border-color .2s, color .2s;
-    }
-    .btn-logout:hover { border-color: var(--error); color: var(--error); }
-
-    /* ── MAIN ── */
-    .main { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
-
-    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
-    .page-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; }
-
-    .btn {
-      padding: 11px 20px;
-      background: var(--accent); color: #fff;
-      border: none; border-radius: var(--radius);
-      font-size: 13px; font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer; transition: background .2s, transform .1s;
-      display: inline-flex; align-items: center; gap: 6px;
-      white-space: nowrap;
-    }
-    .btn:hover { background: var(--accent-h); }
-    .btn:active { transform: scale(0.98); }
-
-    .btn-outline {
-      background: transparent; 
-      color: var(--text); 
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { 
-      border-color: var(--accent); 
-      color: var(--accent); 
-      background: rgba(79,110,247,.05);
-    }
-
-    /* ── STATS ── */
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .stat {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 20px 22px;
-    }
-    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
-    .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; }
-    .stat-value.green { color: var(--success); }
-    .stat-value.blue  { color: var(--accent); }
-    .stat-value.warn  { color: var(--warning); }
-
-    /* ── TOOLBAR ── */
-    .toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-    .search-wrap { flex: 1; min-width: 220px; position: relative; }
-    .search-wrap input {
-      width: 100%;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 11px 16px 11px 40px;
-      font-size: 13px; color: var(--text);
-      font-family: 'Inter', sans-serif; outline: none;
-      transition: border-color .2s;
-    }
-    .search-wrap input:focus { border-color: var(--accent); }
-    .search-wrap::before {
-      content: '🔍'; position: absolute;
-      left: 13px; top: 50%; transform: translateY(-50%);
-      font-size: 13px;
-    }
-    .search-wrap input::placeholder { color: var(--muted); }
-
-    select {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 11px 14px;
-      font-size: 13px; color: var(--text);
-      font-family: 'Inter', sans-serif; outline: none;
-      cursor: pointer; transition: border-color .2s;
-    }
-    select:focus { border-color: var(--accent); }
-
-    /* ── TABLE ── */
-    .table-wrap {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden;
-    }
-    table { width: 100%; border-collapse: collapse; }
-    thead { background: var(--surface2); }
-    th {
-      padding: 13px 16px;
-      text-align: left; font-size: 11px;
-      text-transform: uppercase; letter-spacing: .05em;
-      color: var(--muted); font-weight: 600;
-    }
-    td { padding: 14px 16px; font-size: 13px; border-top: 1px solid var(--border); vertical-align: middle; }
-    tr:hover td { background: var(--surface2); }
-
-    .tag {
-      display: inline-block; padding: 3px 10px;
-      border-radius: 20px; font-size: 11px; font-weight: 600;
-    }
-    .tag-cat  { background: rgba(79,110,247,.15); color: var(--accent); }
-    .tag-qty-ok  { background: rgba(62,207,142,.12); color: var(--success); }
-    .tag-qty-low { background: rgba(242,179,92,.12); color: var(--warning); }
-    .tag-qty-out { background: rgba(242,92,92,.12);  color: var(--error); }
-
-    .action-btns { display: flex; gap: 6px; }
-    .btn-icon {
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 8px; width: 32px; height: 32px;
-      cursor: pointer; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color .2s, background .2s;
-    }
-    .btn-icon.edit:hover  { border-color: var(--accent); background: rgba(79,110,247,.1); }
-    .btn-icon.del:hover   { border-color: var(--error);  background: rgba(242,92,92,.1);  }
-
-    .empty {
-      text-align: center; padding: 60px 20px;
-      color: var(--muted); font-size: 14px;
-    }
-    .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
-    /* ── MODAL ── */
-    .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.65); backdrop-filter: blur(4px);
-      display: none; align-items: center; justify-content: center;
-      z-index: 200; padding: 24px;
-    }
-    .overlay.open { display: flex; }
-    .modal {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 36px;
-      width: 100%; max-width: 480px;
-      box-shadow: 0 32px 80px rgba(0,0,0,.5);
-      animation: slideUp .2s ease;
-    }
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .modal-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; }
-    .close-btn {
-      background: transparent; border: none; color: var(--muted);
-      font-size: 20px; cursor: pointer; padding: 4px;
-      transition: color .2s;
-    }
-    .close-btn:hover { color: var(--text); }
-
-    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-    .modal input, .modal select {
-      width: 100%;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px 14px;
-      font-size: 14px; color: var(--text);
-      font-family: 'Inter', sans-serif; outline: none;
-      transition: border-color .2s;
-    }
-    .modal input:focus, .modal select:focus { border-color: var(--accent); }
-    .modal input::placeholder { color: var(--muted); }
-
-    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
-    .btn-cancel {
-      padding: 11px 20px; background: transparent;
-      border: 1px solid var(--border); border-radius: var(--radius);
-      font-size: 13px; font-weight: 500; color: var(--text);
-      font-family: 'Inter', sans-serif; cursor: pointer;
-      transition: border-color .2s;
-    }
-    .btn-cancel:hover { border-color: var(--muted); }
-
-    .toast {
-      position: fixed; bottom: 24px; right: 24px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 18px;
-      font-size: 13px; color: var(--text);
-      box-shadow: 0 8px 32px rgba(0,0,0,.4);
-      display: none; z-index: 300;
-      animation: fadeIn .2s ease;
-    }
-    .toast.show { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; display: none; margin-top: 6px; }
-    .msg.error   { background: rgba(242,92,92,.12); color: var(--error); border: 1px solid rgba(242,92,92,.3); display: block; }
-    .msg.success { background: rgba(62,207,142,.12); color: var(--success); border: 1px solid rgba(62,207,142,.3); display: block; }
-
-    .loading { display: flex; justify-content: center; align-items: center; padding: 48px; color: var(--muted); font-size: 14px; }
+    /* LOADER E MENSAGENS */
+    .loader-msg { padding: 20px; text-align: center; color: var(--muted); font-size: 14px; }
+    .error-msg { padding: 20px; text-align: center; color: var(--danger); font-size: 14px; }
   </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">
-    <div class="brand-icon">📦</div>
-    <span class="brand-name">StockControl</span>
-  </div>
-  <div class="topbar-right">
-    <div class="user-badge">
-      <div class="user-avatar" id="userAvatar">?</div>
-      <span id="userName">–</span>
+  <aside class="sidebar">
+    <div class="logo"><i class="ph-fill ph-package"></i> StockControl</div>
+    <ul class="menu">
+      <li><a href="dashboard.html" class="active"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
+      <li><a href="produtos.html"><i class="ph ph-cube"></i> Produtos</a></li>
+      <li><a href="categorias.html"><i class="ph ph-folders"></i> Categorias</a></li>
+      <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
+    </ul>
+    <div style="margin-top: auto;">
+      <a href="index.html" style="color: var(--danger); text-decoration: none; display: flex; align-items: center; gap: 12px; padding: 12px;"><i class="ph ph-sign-out"></i> Sair do sistema</a>
     </div>
-    <button class="btn-logout" onclick="logout()">Sair</button>
-  </div>
-</div>
+  </aside>
 
-<div class="main">
-  <div class="page-header">
-    <h1>Produtos</h1>
-    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-      <button class="btn btn-outline" onclick="window.location.href='categorias.html'">
-        🏷️ Gerenciar Categorias
-      </button>
-      <button class="btn" onclick="abrirModal()">+ Novo produto</button>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Total de produtos</div>
-      <div class="stat-value blue" id="statTotal">–</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Em estoque</div>
-      <div class="stat-value green" id="statOk">–</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Estoque baixo</div>
-      <div class="stat-value warn" id="statLow">–</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Sem estoque</div>
-      <div class="stat-value" style="color:var(--error)" id="statOut">–</div>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <div class="search-wrap">
-      <input type="text" id="inputBusca" placeholder="Buscar pelo nome..." oninput="buscar()"/>
-    </div>
-    <select id="filtroCategoria" onchange="buscar()">
-      <option value="">Todas as categorias</option>
-    </select>
-  </div>
-
-  <div class="table-wrap">
-    <div id="loadingState" class="loading">Carregando produtos...</div>
-    <table id="tabelaProdutos" style="display:none">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Categoria</th>
-          <th>Quantidade</th>
-          <th>Preço</th>
-          <th>Responsável</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyProdutos"></tbody>
-    </table>
-    <div id="emptyState" class="empty" style="display:none">
-      <div class="empty-icon">📭</div>
-      <div>Nenhum produto encontrado.</div>
-      <div style="margin-top:8px;font-size:12px">Clique em "+ Novo produto" para começar.</div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="modalOverlay" onclick="fecharModalFora(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 id="modalTitulo">Novo produto</h2>
-      <button class="close-btn" onclick="fecharModal()">✕</button>
+  <main class="main-content">
+    <div class="header">
+      <h1 id="saudacao">Olá, Administrador!</h1>
+      <p>Aqui está o resumo do seu estoque hoje.</p>
     </div>
 
-    <input type="hidden" id="produtoId"/>
-
-    <div class="form-group">
-      <label for="nomeProduto">Nome do produto</label>
-      <input type="text" id="nomeProduto" placeholder="Ex: Camiseta Branca P"/>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="quantidadeProduto">Quantidade</label>
-        <input type="number" id="quantidadeProduto" placeholder="0" min="0"/>
+    <div class="metrics">
+      <div class="card">
+        <div class="icon blue"><i class="ph-fill ph-cube"></i></div>
+        <div class="card-info">
+          <div class="title">Total de Produtos</div>
+          <div class="value" id="card-total-prod">0</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="precoProduto">Preço (R$)</label>
-        <input type="number" id="precoProduto" placeholder="0,00" min="0" step="0.01"/>
+      <div class="card">
+        <div class="icon red"><i class="ph-fill ph-warning-circle"></i></div>
+        <div class="card-info">
+          <div class="title">Estoque Crítico</div>
+          <div class="value" id="card-critico">0 itens</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon green"><i class="ph-fill ph-trend-up"></i></div>
+        <div class="card-info">
+          <div class="title">Total de Entradas</div>
+          <div class="value" id="card-entradas">+ 0</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon orange"><i class="ph-fill ph-trend-down"></i></div>
+        <div class="card-info">
+          <div class="title">Total de Saídas</div>
+          <div class="value" id="card-saidas">- 0</div>
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="categoriaProduto">Categoria</label>
-      <select id="categoriaProduto">
-        <option value="">Selecione uma categoria</option>
-      </select>
+    <div class="dashboard-grid">
+      
+      <div class="panel">
+        <h2><i class="ph-fill ph-bell-ringing" style="color: var(--danger)"></i> Produtos em Alerta (Falta)</h2>
+        <div class="list-container" id="lista-alertas">
+          <div class="loader-msg"><i class="ph ph-spinner ph-spin"></i> Carregando alertas...</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2><i class="ph-fill ph-clock-counter-clockwise" style="color: var(--primary)"></i> Últimas Movimentações</h2>
+        <div class="list-container" id="lista-movimentacoes">
+          <div class="loader-msg"><i class="ph ph-spinner ph-spin"></i> Carregando histórico...</div>
+        </div>
+      </div>
+
     </div>
+  </main>
 
-    <div id="msgModal" class="msg"></div>
-
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-      <button class="btn" id="btnSalvar" onclick="salvarProduto()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-  // ── GUARD: redireciona se não logado ──
-  const usuarioId    = sessionStorage.getItem('usuarioId');
-  const usuarioLogin = sessionStorage.getItem('usuarioLogin');
-  if (!usuarioId) window.location.href = 'index.html';
-
-  // Avatar e nome
-  document.getElementById('userName').textContent = usuarioLogin || '–';
-  document.getElementById('userAvatar').textContent = (usuarioLogin || '?')[0].toUpperCase();
-
-  let todosOsProdutos = [];
-  let categorias = [];
-
-  // ── INIT ──
-  window.onload = async () => {
-    await carregarCategorias();
-    await carregarProdutos();
-  };
-
-  // ── LOGOUT ──
-  function logout() {
-    sessionStorage.clear();
-    window.location.href = 'index.html';
-  }
-
-  // ── CATEGORIAS ──
-  async function carregarCategorias() {
-    try {
-      const res = await fetch('/categorias');
-      categorias = await res.json();
-      const selFiltro = document.getElementById('filtroCategoria');
-      const selModal  = document.getElementById('categoriaProduto');
-      categorias.forEach(c => {
-        selFiltro.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-        selModal.innerHTML  += `<option value="${c.id}">${c.nome}</option>`;
-      });
-    } catch(e) { console.error('Erro ao carregar categorias', e); }
-  }
-
-  // ── CARREGAR PRODUTOS ──
-  async function carregarProdutos(nome = '') {
-    const loading = document.getElementById('loadingState');
-    const table   = document.getElementById('tabelaProdutos');
-    const empty   = document.getElementById('emptyState');
-    loading.style.display = 'flex';
-    table.style.display   = 'none';
-    empty.style.display   = 'none';
-
-    try {
-      const url = nome ? `/produtos?nome=${encodeURIComponent(nome)}` : '/produtos';
-      const res = await fetch(url);
-      todosOsProdutos = await res.json();
-      renderizarTabela(todosOsProdutos);
-      atualizarStats(todosOsProdutos);
-    } catch(e) {
-      loading.textContent = 'Erro ao carregar produtos.';
-    }
-  }
-
-  // ── BUSCAR ──
-  function buscar() {
-    const nome = document.getElementById('inputBusca').value.trim();
-    const catId = document.getElementById('filtroCategoria').value;
-
-    let lista = todosOsProdutos;
-    if (nome)  lista = lista.filter(p => p.nome.toLowerCase().includes(nome.toLowerCase()));
-    if (catId) lista = lista.filter(p => p.categoriaId == catId);
-    renderizarTabela(lista);
-  }
-
-  // ── RENDERIZAR ──
-  function renderizarTabela(lista) {
-    const loading = document.getElementById('loadingState');
-    const table   = document.getElementById('tabelaProdutos');
-    const empty   = document.getElementById('emptyState');
-    const tbody   = document.getElementById('tbodyProdutos');
-    loading.style.display = 'none';
-
-    if (!lista || lista.length === 0) {
-      table.style.display = 'none';
-      empty.style.display = 'block';
-      return;
+  <script>
+    // Personalização da saudação
+    const login = sessionStorage.getItem('usuarioLogin');
+    if(login) {
+      const nomeFormatado = login.charAt(0).toUpperCase() + login.slice(1);
+      document.getElementById('saudacao').textContent = `Olá, ${nomeFormatado}!`;
     }
 
-    table.style.display = 'table';
-    empty.style.display = 'none';
+    // URLs do seu Backend
+    const API_PRODUTOS = 'http://localhost:8080/produtos';
+    const API_MOVIMENTACOES = 'http://localhost:8080/movimentacoes';
 
-    tbody.innerHTML = lista.map(p => {
-      const qtdClass = p.quantidade === 0 ? 'tag-qty-out'
-                     : p.quantidade <= 5  ? 'tag-qty-low'
-                     :                      'tag-qty-ok';
-      const qtdLabel = p.quantidade === 0 ? 'Sem estoque'
-                     : p.quantidade <= 5  ? `${p.quantidade} (baixo)`
-                     :                      p.quantidade;
-      const preco = Number(p.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      return `
-        <tr>
-          <td><strong>${escHtml(p.nome)}</strong></td>
-          <td><span class="tag tag-cat">${escHtml(p.categoriaNome || '–')}</span></td>
-          <td><span class="tag ${qtdClass}">${qtdLabel}</span></td>
-          <td>${preco}</td>
-          <td style="color:var(--muted)">${escHtml(p.usuarioLogin || '–')}</td>
-          <td>
-            <div class="action-btns">
-              <button class="btn-icon edit" title="Editar" onclick="editarProduto(${p.id})">✏️</button>
-              <button class="btn-icon del"  title="Excluir" onclick="excluirProduto(${p.id}, '${escHtml(p.nome)}')">🗑️</button>
-            </div>
-          </td>
-        </tr>`;
-    }).join('');
-  }
+    async function carregarDadosDashboard() {
+      try {
+        // Busca simultaneamente Produtos e Movimentações reais do banco de dados
+        const [resProd, resMov] = await Promise.all([
+          fetch(API_PRODUTOS),
+          fetch(API_MOVIMENTACOES)
+        ]);
 
-  // ── STATS ──
-  function atualizarStats(lista) {
-    const total = lista.length;
-    const ok    = lista.filter(p => p.quantidade > 5).length;
-    const low   = lista.filter(p => p.quantidade > 0 && p.quantidade <= 5).length;
-    const out   = lista.filter(p => p.quantidade === 0).length;
-    document.getElementById('statTotal').textContent = total;
-    document.getElementById('statOk').textContent    = ok;
-    document.getElementById('statLow').textContent   = low;
-    document.getElementById('statOut').textContent   = out;
-  }
+        if (!resProd.ok || !resMov.ok) throw new Error("Falha na conexão");
 
-  // ── MODAL ──
-  function abrirModal() {
-    document.getElementById('modalTitulo').textContent   = 'Novo produto';
-    document.getElementById('produtoId').value           = '';
-    document.getElementById('nomeProduto').value         = '';
-    document.getElementById('quantidadeProduto').value   = '';
-    document.getElementById('precoProduto').value        = '';
-    document.getElementById('categoriaProduto').value    = '';
-    document.getElementById('msgModal').className        = 'msg';
-    document.getElementById('btnSalvar').textContent     = 'Salvar';
-    document.getElementById('modalOverlay').classList.add('open');
-  }
+        const produtos = await resProd.json();
+        const movimentacoes = await resMov.json();
 
-  function editarProduto(id) {
-    const p = todosOsProdutos.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('modalTitulo').textContent = 'Editar produto';
-    document.getElementById('produtoId').value         = p.id;
-    document.getElementById('nomeProduto').value       = p.nome;
-    document.getElementById('quantidadeProduto').value = p.quantidade;
-    document.getElementById('precoProduto').value      = p.preco;
-    document.getElementById('categoriaProduto').value  = p.categoriaId || '';
-    document.getElementById('msgModal').className      = 'msg';
-    document.getElementById('btnSalvar').textContent   = 'Atualizar';
-    document.getElementById('modalOverlay').classList.add('open');
-  }
+        /* =========================================================
+           1. PROCESSAR PRODUTOS (Total e Alertas de Estoque Baixo)
+           ========================================================= */
+        document.getElementById('card-total-prod').textContent = produtos.length;
 
-  function fecharModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-  function fecharModalFora(e) {
-    if (e.target === document.getElementById('modalOverlay')) fecharModal();
-  }
+        // Filtra produtos com estoque crítico (menor ou igual a 5)
+        const produtosAlerta = produtos.filter(p => p.quantidade <= 5);
+        document.getElementById('card-critico').textContent = `${produtosAlerta.length} itens`;
 
-  // ── SALVAR (criar ou atualizar) ──
-  async function salvarProduto() {
-    const id         = document.getElementById('produtoId').value;
-    const nome       = document.getElementById('nomeProduto').value.trim();
-    const quantidade = parseInt(document.getElementById('quantidadeProduto').value);
-    const preco      = parseFloat(document.getElementById('precoProduto').value);
-    const categoriaId = document.getElementById('categoriaProduto').value;
-    const msg        = document.getElementById('msgModal');
-    const btn        = document.getElementById('btnSalvar');
+        const listaAlertas = document.getElementById('lista-alertas');
+        listaAlertas.innerHTML = ''; // Limpa o loader
 
-    msg.className = 'msg';
+        if (produtosAlerta.length === 0) {
+          listaAlertas.innerHTML = '<div class="loader-msg" style="color: var(--success);"><i class="ph-fill ph-check-circle"></i> Tudo certo! Nenhum produto com estoque crítico.</div>';
+        } else {
+          // Ordena para os zerados aparecerem primeiro
+          produtosAlerta.sort((a, b) => a.quantidade - b.quantidade);
+          
+          produtosAlerta.forEach(p => {
+            const isZero = p.quantidade === 0;
+            const badgeClass = isZero ? 'badge-alert' : 'badge-warning';
+            const textoBadge = isZero ? 'Zerado!' : `Restam: ${p.quantidade}`;
+            const categoriaNome = p.categoria && p.categoria.nome ? p.categoria.nome : 'Sem Categoria';
+            
+            listaAlertas.innerHTML += `
+              <div class="list-item">
+                <div class="item-info">
+                  <span class="item-name">${p.nome}</span>
+                  <span class="item-sub">Categoria: ${categoriaNome}</span>
+                </div>
+                <span class="${badgeClass}">${textoBadge}</span>
+              </div>
+            `;
+          });
+        }
 
-    if (!nome) { msg.className = 'msg error'; msg.textContent = 'Informe o nome do produto.'; return; }
-    if (isNaN(quantidade) || quantidade < 0) { msg.className = 'msg error'; msg.textContent = 'Quantidade inválida.'; return; }
-    if (isNaN(preco) || preco < 0) { msg.className = 'msg error'; msg.textContent = 'Preço inválido.'; return; }
-    if (!categoriaId) { msg.className = 'msg error'; msg.textContent = 'Selecione uma categoria.'; return; }
+        /* =========================================================
+           2. PROCESSAR MOVIMENTAÇÕES (Cards de Totais e Últimas Ações)
+           ========================================================= */
+        let totalEntradas = 0;
+        let totalSaidas = 0;
 
-    btn.disabled = true;
-    btn.textContent = 'Salvando...';
+        movimentacoes.forEach(m => {
+          const tipo = (m.tipo || m.tipoMovimentacao || 'ENTRADA').toUpperCase();
+          const qtd = m.quantidade || m.qtd || 0;
+          if (tipo === 'ENTRADA') totalEntradas += qtd;
+          if (tipo === 'SAIDA') totalSaidas += qtd;
+        });
 
-    const body = { nome, quantidade, preco, categoriaId: parseInt(categoriaId), usuarioId: parseInt(usuarioId) };
-    const url    = id ? `/produtos/${id}` : '/produtos';
-    const method = id ? 'PUT' : 'POST';
+        document.getElementById('card-entradas').textContent = `+ ${totalEntradas}`;
+        document.getElementById('card-saidas').textContent = `- ${totalSaidas}`;
 
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+        const listaMov = document.getElementById('lista-movimentacoes');
+        listaMov.innerHTML = ''; // Limpa o loader
 
-      if (res.ok) {
-        fecharModal();
-        mostrarToast(id ? 'Produto atualizado!' : 'Produto cadastrado!');
-        await carregarProdutos();
-      } else {
-        const err = await res.text();
-        msg.className = 'msg error';
-        msg.textContent = err || 'Erro ao salvar produto.';
+        if (movimentacoes.length === 0) {
+          listaMov.innerHTML = '<div class="loader-msg">Nenhuma movimentação registrada no sistema ainda.</div>';
+        } else {
+          // Pega apenas as 5 últimas movimentações (assumindo que as mais recentes estão no topo)
+          const ultimasMovs = movimentacoes.slice(0, 5);
+
+          ultimasMovs.forEach(m => {
+            const tipo = (m.tipo || m.tipoMovimentacao || 'ENTRADA').toUpperCase();
+            const isEntrada = tipo === 'ENTRADA';
+            const badgeClass = isEntrada ? 'badge-ok' : 'badge-alert';
+            const sinal = isEntrada ? '+' : '-';
+            const qtd = m.quantidade || m.qtd || 0;
+            const nomeProd = m.produto ? (m.produto.nome || m.produto) : 'Produto Removido';
+            const responsavel = m.usuario || m.usuario_login || 'Sistema';
+            
+            // Tratamento da data vinda do Java
+            let dataFormatada = 'Recente';
+            if (m.data || m.dataHora) {
+              const d = new Date(m.data || m.dataHora);
+              if (!isNaN(d)) {
+                dataFormatada = d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+              }
+            }
+
+            listaMov.innerHTML += `
+              <div class="list-item">
+                <div class="item-info">
+                  <span class="item-name">${nomeProd}</span>
+                  <span class="item-sub">${dataFormatada} por @${responsavel}</span>
+                </div>
+                <span class="${badgeClass}">${sinal} ${qtd} ${isEntrada ? 'Entradas' : 'Saídas'}</span>
+              </div>
+            `;
+          });
+        }
+
+      } catch (error) {
+        document.getElementById('lista-alertas').innerHTML = '<div class="error-msg"><i class="ph ph-warning"></i> Erro ao buscar dados reais do servidor.</div>';
+        document.getElementById('lista-movimentacoes').innerHTML = '<div class="error-msg"><i class="ph ph-warning"></i> Erro ao buscar dados reais do servidor.</div>';
       }
-    } catch(e) {
-      msg.className = 'msg error';
-      msg.textContent = 'Erro ao conectar ao servidor.';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = id ? 'Atualizar' : 'Salvar';
     }
-  }
 
-  // ── EXCLUIR ──
-  async function excluirProduto(id, nome) {
-    if (!confirm(`Excluir o produto "${nome}"? Esta ação não pode ser desfeita.`)) return;
-    try {
-      const res = await fetch(`/produtos/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        mostrarToast('Produto excluído.');
-        await carregarProdutos();
-      } else {
-        alert('Erro ao excluir produto.');
-      }
-    } catch(e) { alert('Erro ao conectar ao servidor.'); }
-  }
-
-  // ── TOAST ──
-  function mostrarToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = '✓ ' + msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
-
-  function escHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-</script>
+    // Inicia o carregamento ao abrir a página
+    window.onload = carregarDadosDashboard;
+  </script>
 </body>
 </html>
