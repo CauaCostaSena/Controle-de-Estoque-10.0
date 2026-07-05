@@ -242,7 +242,10 @@
       document.getElementById('prodId').value = id;
       document.getElementById('prodNome').value = nome;
       document.getElementById('prodQtd').value = qtd;
-      document.getElementById('prodQtd').disabled = true; // alterações de estoque apenas por movimentações (regra de auditoria)
+      
+      // MUDANÇA AQUI: Agora o campo fica liberado para o usuário corrigir erros de digitação!
+      document.getElementById('prodQtd').disabled = false; 
+      
       document.getElementById('prodPreco').value = preco;
       document.getElementById('prodCategoria').value = catId || '';
       document.getElementById('modalTitle').textContent = `Editar Produto #${id}`;

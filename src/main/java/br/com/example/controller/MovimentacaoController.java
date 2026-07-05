@@ -7,8 +7,8 @@ import br.com.example.model.Movimentacao;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movimentacoes") // Resolve o Erro 404!
-@CrossOrigin("*") // Permite o acesso do HTML
+@RequestMapping("/movimentacoes") 
+@CrossOrigin("*") 
 public class MovimentacaoController {
 
     private MovimentacaoDAO dao = new MovimentacaoDAO();
@@ -24,12 +24,16 @@ public class MovimentacaoController {
             return ResponseEntity.badRequest().body("A quantidade deve ser maior que zero.");
         }
         
-        boolean sucesso = dao.salvar(mov);
+        // ALTERADO: Agora recebemos uma String (texto) do DAO em vez de boolean!
+        String resultado = dao.salvar(mov);
         
-        if (sucesso) {
+        // Verificamos o que o DAO nos respondeu
+        if (resultado.equals("sucesso")) {
             return ResponseEntity.ok("Movimentação registrada com sucesso!");
         } else {
-            return ResponseEntity.internalServerError().body("Erro ao registrar movimentação.");
+            // Se não for "sucesso", é porque a trava de estoque bloqueou ou deu outro erro.
+            // Retornamos a mensagem exata que veio do DAO (ex: "Erro: Estoque insuficiente...")
+            return ResponseEntity.badRequest().body(resultado);
         }
     }
 }

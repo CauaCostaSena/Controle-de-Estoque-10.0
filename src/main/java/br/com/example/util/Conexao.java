@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    // Configurações do Banco de Dados - Ajustadas para o seu ambiente local
-    private static final String URL = "jdbc:mysql://localhost:3306/estoque_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    // Ajustado o serverTimezone para America/Sao_Paulo para resolver o atraso de 3 horas
+    private static final String URL = "jdbc:mysql://localhost:3306/estoque_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; // Deixado em branco, já que seu banco não tem senha
+    private static final String PASSWORD = ""; // Sem senha
 
     /**
      * Método para obter uma conexão ativa com o banco de dados.
