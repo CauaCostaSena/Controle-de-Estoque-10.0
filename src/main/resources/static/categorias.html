@@ -2,95 +2,219 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StockControl – Categorias</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    /* ... Cole aqui o mesmo bloco <style> que usei no produtos.html acima (até a .btn-cancel) ... */
-    /* Resumo das variáveis e layout base para não estourar o limite de texto: */
-    :root { --bg: #0f172a; --surface: #1e293b; --surface-hover: #334155; --border: #334155; --text: #f8fafc; --muted: #94a3b8; --primary: #6366f1; --primary-hover: #4f46e5; --danger: #ef4444; }
+    :root {
+      --bg: #0f172a; --surface: #1e293b; --surface-hover: #334155;
+      --border: #334155; --text: #f8fafc; --muted: #94a3b8;
+      --primary: #6366f1; --primary-hover: #4f46e5; --danger: #ef4444; 
+      --success: #10b981;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
     
-    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px; height: 100vh; }
-    .sidebar .logo { font-size: 20px; font-weight: bold; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
-    .sidebar .logo i { color: var(--primary); font-size: 28px; }
-    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .menu a { text-decoration: none; color: var(--muted); padding: 12px 16px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: all 0.2s ease; }
-    .menu a:hover { background: var(--surface-hover); color: var(--text); padding-left: 20px; }
-    .menu a.active { background: var(--surface-hover); color: var(--text); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; }
-    
-    .main-content { flex: 1; padding: 32px 40px; overflow-y: auto; animation: fadeIn 0.4s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-    .header h1 { font-size: 24px; font-weight: 600; }
-    .btn-primary { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
-    .btn-primary:active { transform: scale(0.95); }
+    /* SIDEBAR NAVIGATION */
+    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 32px; }
+    .brand i { color: var(--primary); font-size: 28px; }
+    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+    .menu a { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+    .menu a:hover, .menu a.active { background: var(--surface-hover); color: #fff; }
+    .menu a.active { border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding-left: 8px; }
+    .user-info { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 18px; }
 
-    .table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 800px;}
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: var(--surface-hover); padding: 16px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
-    td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
-    tr { transition: background 0.2s; }
-    tr:hover { background: var(--surface-hover); }
+    .main-content { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 26px; font-weight: 700; }
+    
+    .btn-primary { background: var(--primary); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th { background: rgba(15, 23, 42, 0.4); padding: 16px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 16px; border-bottom: 1px solid var(--border); color: #e2e8f0; }
     
     .actions { display: flex; gap: 8px; }
-    .btn-icon { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-    .btn-icon:hover { background: var(--primary); border-color: var(--primary); color: #fff; transform: translateY(-2px); }
-    .btn-icon.delete:hover { background: var(--danger); border-color: var(--danger); }
+    .btn-icon { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px; border-radius: 6px; cursor: pointer; }
+    .btn-icon:hover { background: var(--surface-hover); color: var(--primary); }
+    .btn-icon.delete:hover { color: var(--danger); }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(4px); z-index: 999; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 400px; padding: 28px; }
+    .modal h2 { font-size: 18px; margin-bottom: 20px; color: #fff; }
+    
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 14px; }
+    
+    .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 8px; cursor: pointer; }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); display: none; align-items: center; gap: 10px; font-size: 14px; z-index: 10000; }
+    .toast.success { border-color: var(--success); color: #a7f3d0; }
+    .toast.error { border-color: var(--danger); color: #fca5a5; }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div class="logo"><i class="ph-fill ph-package"></i> StockControl</div>
-    <ul class="menu">
-      <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
-      <li><a href="produtos.html"><i class="ph ph-cube"></i> Produtos</a></li>
-      <li><a href="categorias.html" class="active"><i class="ph ph-folders"></i> Categorias</a></li>
-      <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
-    </ul>
+    <div>
+      <div class="brand"><i class="ph ph-package"></i> <span>StockControl</span></div>
+      <ul class="menu">
+        <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
+        <li><a href="produtos.html"><i class="ph ph-cube"></i> Produtos</a></li>
+        <li><a href="categorias.html" class="active"><i class="ph ph-folders"></i> Categorias</a></li>
+        <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
+      </ul>
+    </div>
+    <div class="user-info">
+      <div><i class="ph ph-user-circle"></i> <span id="sessao-usuario">@operador</span></div>
+      <button class="btn-logout" onclick="sessionStorage.clear(); window.location.href='index.html';"><i class="ph ph-sign-out"></i></button>
+    </div>
   </aside>
 
   <main class="main-content">
     <div class="header">
-      <h1>Categorias</h1>
-      <button class="btn-primary"><i class="ph ph-plus"></i> Nova Categoria</button>
+      <h1>Categorias Cadastradas</h1>
+      <button class="btn-primary" onclick="abrirModal()"><i class="ph ph-plus"></i> Nova Categoria</button>
     </div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th width="80%">Nome da Categoria</th>
+            <th width="20%">ID da Categoria</th>
+            <th width="60%">Nome da Categoria (Definição Única)</th>
             <th width="20%">Ações</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Eletrônicos</td>
-            <td>
-              <div class="actions">
-                <button class="btn-icon"><i class="ph ph-pencil-simple"></i></button>
-                <button class="btn-icon delete"><i class="ph ph-trash"></i></button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Padaria</td>
-            <td>
-              <div class="actions">
-                <button class="btn-icon"><i class="ph ph-pencil-simple"></i></button>
-                <button class="btn-icon delete"><i class="ph ph-trash"></i></button>
-              </div>
-            </td>
-          </tr>
+        <tbody id="tabela-categorias">
+          <!-- Dinâmico -->
         </tbody>
       </table>
     </div>
   </main>
 
+  <div class="modal-overlay" id="modalCategoria">
+    <div class="modal">
+      <h2 id="modalTitle">Cadastrar Categoria</h2>
+      <form id="formCategoria" onsubmit="salvarCategoria(event)">
+        <input type="hidden" id="catId"/>
+        <div class="form-group">
+          <label for="catNome">Nome da Categoria</label>
+          <input type="text" id="catNome" class="form-control" placeholder="Ex: Higiene, Bebidas" required maxlength="50"/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Categoria</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    if(!sessionStorage.getItem('usuarioId')) window.location.href = 'index.html';
+    document.getElementById('sessao-usuario').textContent = `@${sessionStorage.getItem('usuarioLogin')}`;
+
+    async function carregarCategorias() {
+      try {
+        const res = await fetch('/categorias');
+        const dados = await res.json();
+        const t = document.getElementById('tabela-categorias');
+        t.innerHTML = '';
+        
+        if(dados.length === 0) {
+          t.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhuma categoria cadastrada.</td></tr>';
+          return;
+        }
+
+        dados.forEach(c => {
+          t.innerHTML += `
+            <tr>
+              <td>#${c.id}</td>
+              <td style="font-weight:500; color:#fff;">${c.nome}</td>
+              <td>
+                <div class="actions">
+                  <button class="btn-icon" onclick="prepararEdicao(${c.id}, '${c.nome.replace(/'/g, "\'")}')"><i class="ph ph-pencil-simple"></i></button>
+                  <button class="btn-icon delete" onclick="excluirCategoria(${c.id})"><i class="ph ph-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) { mostrarToast('Erro ao conectar com o banco.', 'error'); }
+    }
+
+    function abrirModal() {
+      document.getElementById('formCategoria').reset();
+      document.getElementById('catId').value = '';
+      document.getElementById('modalTitle').textContent = 'Cadastrar Categoria';
+      document.getElementById('modalCategoria').classList.add('active');
+    }
+
+    function prepararEdicao(id, nome) {
+      document.getElementById('catId').value = id;
+      document.getElementById('catNome').value = nome;
+      document.getElementById('modalTitle').textContent = 'Editar Categoria';
+      document.getElementById('modalCategoria').classList.add('active');
+    }
+
+    function fecharModal() { document.getElementById('modalCategoria').classList.remove('active'); }
+
+    async function salvarCategoria(event) {
+      event.preventDefault();
+      const id = document.getElementById('catId').value;
+      const nome = document.getElementById('catNome').value;
+
+      const url = id ? `/categorias/${id}` : '/categorias';
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome })
+        });
+
+        if(res.ok) {
+          mostrarToast('Categoria salva com sucesso!', 'success');
+          fecharModal();
+          carregarCategorias();
+        } else {
+          // Trata UNIQUE constraint do MySQL de forma amigável
+          mostrarToast('Erro: Nome já existente ou inválido (Sensível a maiúsculas/acentos).', 'error');
+        }
+      } catch (e) { mostrarToast('Falha na requisição.', 'error'); }
+    }
+
+    async function excluirCategoria(id) {
+      if(!confirm('Atenção: A regra ON DELETE RESTRICT impede a exclusão se houver produtos vinculados. Confirmar?')) return;
+      try {
+        const res = await fetch(`/categorias/${id}`, { method: 'DELETE' });
+        if(res.ok) {
+          mostrarToast('Categoria removida!', 'success');
+          carregarCategorias();
+        } else {
+          mostrarToast('Impossível excluir: Existem produtos nesta categoria.', 'error');
+        }
+      } catch (e) { mostrarToast('Erro ao excluir.', 'error'); }
+    }
+
+    function mostrarToast(txt, type) {
+      const el = document.getElementById('toast');
+      el.textContent = txt; el.className = `toast ${type}`; el.style.display = 'flex';
+      setTimeout(() => el.style.display = 'none', 3000);
+    }
+
+    window.onload = carregarCategorias;
+  </script>
 </body>
 </html>

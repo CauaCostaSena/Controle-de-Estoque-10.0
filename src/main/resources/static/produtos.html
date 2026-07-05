@@ -16,300 +16,348 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
     
-    /* BARRA LATERAL */
-    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px; height: 100vh; }
-    .sidebar .logo { font-size: 20px; font-weight: bold; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
-    .sidebar .logo i { color: var(--primary); font-size: 28px; }
-    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .menu a { text-decoration: none; color: var(--muted); padding: 12px 16px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: all 0.2s ease; }
-    .menu a:hover { background: var(--surface-hover); color: var(--text); padding-left: 20px; }
-    .menu a.active { background: var(--surface-hover); color: var(--text); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; }
-    
-    /* CONTEÚDO PRINCIPAL */
-    .main-content { flex: 1; padding: 32px 40px; overflow-y: auto; animation: fadeIn 0.4s ease; position: relative; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-    .header h1 { font-size: 24px; font-weight: 600; }
-    
-    .btn-primary { background: var(--primary); color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    /* SIDEBAR */
+    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 32px; }
+    .brand i { color: var(--primary); font-size: 28px; }
+    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+    .menu a { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+    .menu a:hover, .menu a.active { background: var(--surface-hover); color: #fff; }
+    .menu a.active { border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding-left: 8px; }
+    .user-info { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 18px; }
 
-    /* TABELA DE PRODUTOS */
+    /* CONTENT layout */
+    .main-content { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 26px; font-weight: 700; }
+    
+    .btn-primary { background: var(--primary); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    /* TABLE DESIGN */
     .table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: var(--surface-hover); padding: 16px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
-    td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
-    tr { transition: background 0.2s; }
-    tr:hover { background: var(--surface-hover); }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th { background: rgba(15, 23, 42, 0.4); padding: 16px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 16px; border-bottom: 1px solid var(--border); color: #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    
+    .actions { display: flex; gap: 8px; }
+    .btn-icon { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .btn-icon:hover { background: var(--surface-hover); color: var(--primary); }
+    .btn-icon.delete:hover { color: var(--danger); }
+    .btn-icon.movement:hover { color: var(--success); }
 
-    .action-btn { background: transparent; border: none; cursor: pointer; font-size: 18px; color: var(--muted); transition: color 0.2s; padding: 4px; }
-    .action-btn.edit:hover { color: var(--primary); }
-    .action-btn.delete:hover { color: var(--danger); }
+    /* NOTIFICATION TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; gap: 10px; font-size: 14px; }
+    .toast.success { border-color: var(--success); color: #a7f3d0; }
+    .toast.error { border-color: var(--danger); color: #fca5a5; }
 
-    .badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-    .badge.ok { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-    .badge.low { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-
-    /* MODAL DE CADASTRO/EDIÇÃO */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: var(--surface); padding: 32px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid var(--border); transform: scale(0.95); transition: transform 0.3s; }
-    .modal-overlay.active .modal-box { transform: scale(1); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .modal-header h2 { font-size: 18px; }
-    .modal-header button { background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
-    .modal-header button:hover { color: var(--text); }
+    /* MODAL DESIGN */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(4px); z-index: 999; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 460px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .modal h2 { font-size: 18px; margin-bottom: 20px; color: #fff; }
     
     .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-    .form-group input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 8px; outline: none; }
-    .form-group input:focus { border-color: var(--primary); }
-    .modal-footer { display: flex; gap: 12px; margin-top: 24px; }
-    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; flex: 1; cursor: pointer; transition: 0.2s; }
-    .btn-secondary:hover { background: var(--surface-hover); }
-    .btn-submit { background: var(--primary); border: none; color: white; padding: 12px; border-radius: 8px; flex: 1; cursor: pointer; transition: 0.2s; font-weight: 600; }
-    .btn-submit:hover { background: var(--primary-hover); }
-
-    /* SISTEMA DE NOTIFICAÇÕES (TOASTS) VISUALMENTE BONITOS */
-    .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
-    .toast { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; color: #fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; min-width: 250px; }
-    .toast.success { background: var(--surface); border-left: 4px solid var(--success); }
-    .toast.success i { color: var(--success); font-size: 20px; }
-    .toast.error { background: var(--surface); border-left: 4px solid var(--danger); }
-    .toast.error i { color: var(--danger); font-size: 20px; }
-    .toast.fade-out { animation: fadeOut 0.4s forwards; }
-
-    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes fadeOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 14px; }
+    .form-control:focus { outline: none; border-color: var(--primary); }
+    
+    .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 8px; cursor: pointer; }
+    .btn-cancel:hover { color: #fff; background: rgba(255,255,255,0.05); }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div class="logo"><i class="ph-fill ph-package"></i> StockControl</div>
-    <ul class="menu">
-      <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
-      <li><a href="produtos.html" class="active"><i class="ph ph-cube"></i> Produtos</a></li>
-      <li><a href="categorias.html"><i class="ph ph-folders"></i> Categorias</a></li>
-      <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
-    </ul>
-    <div style="margin-top: auto;">
-      <a href="index.html" style="color: var(--danger); text-decoration: none; display: flex; align-items: center; gap: 12px; padding: 12px;"><i class="ph ph-sign-out"></i> Sair do sistema</a>
+    <div>
+      <div class="brand"><i class="ph ph-package"></i> <span>StockControl</span></div>
+      <ul class="menu">
+        <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
+        <li><a href="produtos.html" class="active"><i class="ph ph-cube"></i> Produtos</a></li>
+        <li><a href="categorias.html"><i class="ph ph-folders"></i> Categorias</a></li>
+        <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
+      </ul>
+    </div>
+    <div class="user-info">
+      <div><i class="ph ph-user-circle"></i> <span id="sessao-usuario">@operador</span></div>
+      <button class="btn-logout" onclick="sessionStorage.clear(); window.location.href='index.html';"><i class="ph ph-sign-out"></i></button>
     </div>
   </aside>
 
   <main class="main-content">
     <div class="header">
-      <h1>Gerenciar Produtos</h1>
-      <button class="btn-primary" onclick="abrirModal()"><i class="ph ph-plus"></i> Novo Produto</button>
+      <h1>Gerenciamento de Produtos</h1>
+      <button class="btn-primary" onclick="abrirModalCadastro()"><i class="ph ph-plus"></i> Novo Produto</button>
     </div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nome do Produto</th>
-            <th>Categoria</th>
-            <th>Quantidade</th>
-            <th>Preço (R$)</th>
-            <th>Ações</th>
+            <th width="8%">ID</th>
+            <th width="32%">Nome do Produto</th>
+            <th width="15%">Estoque</th>
+            <th width="15%">Preço Unitário</th>
+            <th width="15%">Categoria</th>
+            <th width="15%">Ações</th>
           </tr>
         </thead>
-        <tbody id="tabela-corpo">
+        <tbody id="tabela-produtos">
           </tbody>
       </table>
     </div>
   </main>
 
-  <div class="modal-overlay" id="produtoModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2 id="modalTitle">Cadastrar Produto</h2>
-        <button onclick="fecharModal()"><i class="ph ph-x"></i></button>
-      </div>
+  <div class="modal-overlay" id="modalProduto">
+    <div class="modal">
+      <h2 id="modalTitle">Cadastrar Novo Produto</h2>
       <form id="formProduto" onsubmit="salvarProduto(event)">
-        <input type="hidden" id="prodId" />
+        <input type="hidden" id="prodId"/>
         
         <div class="form-group">
-          <label>Nome do Produto</label>
-          <input type="text" id="prodNome" required placeholder="Ex: Teclado Mecânico"/>
-        </div>
-        <div class="form-group">
-          <label>Quantidade em Estoque</label>
-          <input type="number" id="prodQtd" required min="0" placeholder="Ex: 15"/>
-        </div>
-        <div class="form-group">
-          <label>Preço Unitário (R$)</label>
-          <input type="number" id="prodPreco" required step="0.01" min="0" placeholder="Ex: 120.50"/>
+          <label for="prodNome">Nome do Produto</label>
+          <input type="text" id="prodNome" class="form-control" required maxlength="100"/>
         </div>
         
+        <div class="form-group">
+          <label for="prodQtd">Estoque Inicial</label>
+          <input type="number" id="prodQtd" class="form-control" min="0" required value="0"/>
+        </div>
+        
+        <div class="form-group">
+          <label for="prodPreco">Preço Unitário (R$)</label>
+          <input type="number" id="prodPreco" class="form-control" step="0.01" min="0" required value="0.00"/>
+        </div>
+        
+        <div class="form-group">
+          <label for="prodCategoria">Categoria Vinculada</label>
+          <select id="prodCategoria" class="form-control" required>
+            </select>
+        </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="fecharModal()">Cancelar</button>
-          <button type="submit" class="btn-submit">Salvar Dados</button>
+          <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Produto</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="modal-overlay" id="modalMovimentacao">
+    <div class="modal">
+      <h2>Lançar Movimentação de Estoque</h2>
+      <form id="formMov" onsubmit="lancarMovimentacao(event)">
+        <input type="hidden" id="movProdId"/>
+        <div class="form-group">
+          <label>Produto Selecionado</label>
+          <input type="text" id="movProdNome" class="form-control" readonly style="opacity: 0.6;"/>
+        </div>
+        <div class="form-group">
+          <label for="movTipo">Tipo de Operação</label>
+          <select id="movTipo" class="form-control" required>
+            <option value="ENTRADA">ENTRADA (Aumento de Estoque)</option>
+            <option value="SAIDA">SAÍDA (Baixa de Estoque)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="movQtd">Quantidade</label>
+          <input type="number" id="movQtd" class="form-control" min="1" required value="1"/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="fecharModalMov()">Cancelar</button>
+          <button type="submit" class="btn-primary" style="background:var(--success)">Confirmar Operação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
 
   <script>
-    // URL base do seu Backend Spring Boot
-    const API_URL = 'http://localhost:8080/produtos';
+    const operId = sessionStorage.getItem('usuarioId');
+    if(!operId) window.location.href = 'index.html';
+    document.getElementById('sessao-usuario').textContent = `@${sessionStorage.getItem('usuarioLogin')}`;
 
-    // 1. FUNÇÃO PARA CRIAR ALERTAS ELEGANTES NA TELA
-    function mostrarNotificacao(mensagem, tipo = 'success') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = `toast ${tipo}`;
-      
-      const icone = tipo === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
-      toast.innerHTML = `<i class="ph-fill ${icone}"></i> <span>${mensagem}</span>`;
-      
-      container.appendChild(toast);
-
-      // Remove automaticamente após 3.5 segundos
-      setTimeout(() => {
-        toast.classList.add('fade-out');
-        toast.addEventListener('animationend', () => toast.remove());
-      }, 3500);
-    }
-
-    // 2. BUSCAR DADOS REAIS DO BANCO DE DADOS
     async function carregarProdutos() {
-      const tbody = document.getElementById('tabela-corpo');
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;"><i class="ph ph-spinner ph-spin"></i> Carregando do banco de dados...</td></tr>';
-
       try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Falha ao conectar no backend');
-        
-        const produtos = await response.json();
-        renderizarTabela(produtos);
-      } catch (error) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--danger);">Erro ao carregar produtos. Verifique se o backend está rodando.</td></tr>';
-        mostrarNotificacao('Erro de conexão com o banco', 'error');
-      }
-    }
+        const res = await fetch('/produtos');
+        const produtos = await res.json();
+        const tabela = document.getElementById('tabela-produtos');
+        tabela.innerHTML = '';
 
-    // 3. RENDERIZAR TABELA COM DADOS DO BANCO
-    function renderizarTabela(produtos) {
-      const tbody = document.getElementById('tabela-corpo');
-      tbody.innerHTML = '';
+        if(produtos.length === 0) {
+          tabela.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted);">Nenhum produto cadastrado no banco estoque_db.</td></tr>';
+          return;
+        }
 
-      if (produtos.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--muted);">Nenhum produto cadastrado no banco.</td></tr>';
-        return;
-      }
-
-      produtos.forEach(p => {
-        const tr = document.createElement('tr');
-        
-        const badgeClass = p.quantidade > 5 ? 'badge ok' : 'badge low';
-        const badgeText = p.quantidade > 5 ? 'Em Estoque' : 'Baixo';
-        const nomeCategoria = p.categoria && p.categoria.nome ? p.categoria.nome : 'Geral';
-
-        // Evita erros caso o preço venha nulo
-        const precoFormatado = p.preco ? p.preco.toFixed(2) : '0.00';
-
-        tr.innerHTML = `
-          <td style="color: var(--muted);">#${p.id}</td>
-          <td style="font-weight: 500;">${p.nome}</td>
-          <td style="color: var(--muted); font-size: 13px;">${nomeCategoria}</td>
-          <td><span class="${badgeClass}">${p.quantidade} (${badgeText})</span></td>
-          <td>R$ ${precoFormatado}</td>
-          <td>
-            <button class="action-btn edit" onclick="prepararEdicao(${p.id}, '${p.nome}', ${p.quantidade}, ${p.preco})" title="Editar"><i class="ph ph-pencil-simple"></i></button>
-            <button class="action-btn delete" onclick="excluirProduto(${p.id})" title="Excluir"><i class="ph ph-trash"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // 4. LÓGICA DE SALVAR OU ATUALIZAR (POST ou PUT)
-    async function salvarProduto(event) {
-      event.preventDefault(); // Impede a página de recarregar
-      
-      const id = document.getElementById('prodId').value;
-      const nome = document.getElementById('prodNome').value;
-      const quantidade = parseInt(document.getElementById('prodQtd').value);
-      const preco = parseFloat(document.getElementById('prodPreco').value);
-
-      const dadosProduto = { nome, quantidade, preco };
-
-      try {
-        const metodo = id ? 'PUT' : 'POST';
-        const url = id ? `${API_URL}/${id}` : API_URL;
-
-        const response = await fetch(url, {
-          method: metodo,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dadosProduto)
+        produtos.forEach(p => {
+          const nomeCat = p.categoria ? (p.categoria.nome || p.categoria) : 'Sem categoria';
+          tabela.innerHTML += `
+            <tr>
+              <td>#${p.id}</td>
+              <td style="font-weight:600; color:#fff;">${p.nome}</td>
+              <td>${p.quantidade} un</td>
+              <td>R$ ${p.preco.toFixed(2)}</td>
+              <td><span style="color:var(--muted);">${nomeCat}</span></td>
+              <td>
+                <div class="actions">
+                  <button class="btn-icon" onclick="abrirModalMov(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" title="Movimentar Estoque"><i class="ph ph-arrows-left-right"></i></button>
+                  <button class="btn-icon" onclick="prepararEdicao(${p.id}, '${p.nome.replace(/'/g, "\\'")}', ${p.quantidade}, ${p.preco}, ${p.categoria?.id || p.id_categoria})" title="Editar"><i class="ph ph-pencil-simple"></i></button>
+                  <button class="btn-icon delete" onclick="excluirProduto(${p.id})" title="Excluir"><i class="ph ph-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
         });
-
-        // IMPORTANTE: Seu controller Java retorna String pura ("Produto cadastrado!"), 
-        // então não podemos usar response.json() aqui, senão quebra e não atualiza a tela!
-        const mensagemRetorno = await response.text();
-
-        if (response.ok) {
-          mostrarNotificacao(mensagemRetorno, 'success');
-          fecharModal();
-          carregarProdutos(); // Atualiza a tabela com o banco real
-        } else {
-          mostrarNotificacao('Falha na operação: ' + mensagemRetorno, 'error');
-        }
-      } catch (error) {
-        mostrarNotificacao('Erro fatal de conexão ao salvar', 'error');
+      } catch (e) {
+        mostrarToast('Erro ao listar produtos do servidor.', 'error');
       }
     }
 
-    // 5. EXCLUSÃO DE PRODUTO REAL
-    async function excluirProduto(id) {
-      // Pequena confirmação nativa (pois exclusão de dados é crítica)
-      if (!confirm("Tem certeza que deseja excluir permanentemente o produto #" + id + "?")) return;
-
+    async function carregarCategoriasDropdown() {
       try {
-        const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-        const mensagemRetorno = await response.text();
-
-        if (response.ok) {
-          mostrarNotificacao(mensagemRetorno, 'success');
-          carregarProdutos(); // Recarrega do banco
-        } else {
-          mostrarNotificacao('Erro: ' + mensagemRetorno, 'error');
-        }
-      } catch (error) {
-        mostrarNotificacao('Erro de conexão ao excluir', 'error');
-      }
+        const res = await fetch('/categorias');
+        const categorias = await res.json();
+        const select = document.getElementById('prodCategoria');
+        select.innerHTML = '<option value="">-- Selecione uma Categoria --</option>';
+        categorias.forEach(c => {
+          select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+        });
+      } catch (e) { console.error('Erro categorias dropdown', e); }
     }
 
-    // CONTROLE DE MODAL
-    function abrirModal() {
+    function abrirModalCadastro() {
       document.getElementById('formProduto').reset();
       document.getElementById('prodId').value = '';
-      document.getElementById('modalTitle').textContent = 'Cadastrar Produto';
-      document.getElementById('produtoModal').classList.add('active');
+      document.getElementById('prodQtd').disabled = false; // permite estoque inicial apenas no cadastro
+      document.getElementById('modalTitle').textContent = 'Cadastrar Novo Produto';
+      document.getElementById('modalProduto').classList.add('active');
     }
 
-    function fecharModal() {
-      document.getElementById('produtoModal').classList.remove('active');
-    }
-
-    function prepararEdicao(id, nome, qtd, preco) {
+    function prepararEdicao(id, nome, qtd, preco, catId) {
       document.getElementById('prodId').value = id;
       document.getElementById('prodNome').value = nome;
       document.getElementById('prodQtd').value = qtd;
+      document.getElementById('prodQtd').disabled = true; // alterações de estoque apenas por movimentações (regra de auditoria)
       document.getElementById('prodPreco').value = preco;
-      
-      document.getElementById('modalTitle').textContent = 'Editar Produto #' + id;
-      document.getElementById('produtoModal').classList.add('active');
+      document.getElementById('prodCategoria').value = catId || '';
+      document.getElementById('modalTitle').textContent = `Editar Produto #${id}`;
+      document.getElementById('modalProduto').classList.add('active');
     }
 
-    // Ao carregar a tela, busca os dados da API Java
-    window.onload = carregarProdutos;
+    function fecharModal() { document.getElementById('modalProduto').classList.remove('active'); }
+
+    async function salvarProduto(event) {
+      event.preventDefault();
+      const id = document.getElementById('prodId').value;
+      const nome = document.getElementById('prodNome').value;
+      const quantidade = document.getElementById('prodQtd').value;
+      const preco = document.getElementById('prodPreco').value;
+      const idCategoria = document.getElementById('prodCategoria').value;
+
+      const payload = {
+        nome,
+        quantidade: parseInt(quantidade),
+        preco: parseFloat(preco),
+        // Envia objeto ou id conforme o seu backend Spring preferir (suporta ambos)
+        id_categoria: parseInt(idCategoria),
+        id_usuario: parseInt(operId),
+        categoria: { id: parseInt(idCategoria) },
+        usuario: { id: parseInt(operId) }
+      };
+
+      const url = id ? `/produtos/${id}` : '/produtos';
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if(res.ok) {
+          mostrarToast(id ? 'Produto atualizado!' : 'Produto cadastrado com sucesso!', 'success');
+          fecharModal();
+          carregarProdutos();
+        } else {
+          mostrarToast('Falha ao salvar produto. Verifique os dados.', 'error');
+        }
+      } catch (e) { mostrarToast('Erro na conexão com o servidor.', 'error'); }
+    }
+
+    async function excluirProduto(id) {
+      if(!confirm('Atenção: Ao excluir o produto, o histórico de movimentações dele será preservado com ID nulo (SET NULL). Deseja continuar?')) return;
+      try {
+        const res = await fetch(`/produtos/${id}`, { method: 'DELETE' });
+        if(res.ok) {
+          mostrarToast('Produto excluído! Histórico de auditoria preservado.', 'success');
+          carregarProdutos();
+        } else {
+          const txt = await res.text();
+          mostrarToast('Erro: ' + txt, 'error');
+        }
+      } catch (e) { mostrarToast('Erro ao processar exclusão.', 'error'); }
+    }
+
+    // Controle de Movimentação Rápida
+    function abrirModalMov(id, nome) {
+      document.getElementById('formMov').reset();
+      document.getElementById('movProdId').value = id;
+      document.getElementById('movProdNome').value = nome;
+      document.getElementById('modalMovimentacao').classList.add('active');
+    }
+    function fecharModalMov() { document.getElementById('modalMovimentacao').classList.remove('active'); }
+
+    async function lancarMovimentacao(event) {
+      event.preventDefault();
+      const idProduto = document.getElementById('movProdId').value;
+      const tipo = document.getElementById('movTipo').value;
+      const quantidade = document.getElementById('movQtd').value;
+
+      const payload = {
+        quantidade: parseInt(quantidade),
+        tipo,
+        id_produto: parseInt(idProduto),
+        id_usuario: parseInt(operId),
+        produto: { id: parseInt(idProduto) },
+        usuario: { id: parseInt(operId) }
+      };
+
+      try {
+        const res = await fetch('/movimentacoes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if(res.ok) {
+          mostrarToast('Movimentação registrada e estoque atualizado!', 'success');
+          fecharModalMov();
+          carregarProdutos();
+        } else {
+          const txt = await res.text();
+          mostrarToast('Erro: ' + txt, 'error');
+        }
+      } catch (e) { mostrarToast('Erro ao registrar movimentação.', 'error'); }
+    }
+
+    function mostrarToast(txt, type) {
+      const el = document.getElementById('toast');
+      el.textContent = txt;
+      el.className = `toast ${type}`;
+      el.style.display = 'flex';
+      setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+
+    window.onload = () => {
+      carregarProdutos();
+      carregarCategoriasDropdown();
+    };
   </script>
 </body>
 </html>

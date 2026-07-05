@@ -7,109 +7,141 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #09090b; --surface: #121214; --surface2: #18181b; --border: #27272a;
-      --accent: #2563eb; --accent-h: #3b82f6; --text: #f4f4f5; --muted: #a1a1aa;
-      --error: #ef4444; --success: #10b981; --radius: 8px;
+      --bg: #09090b; 
+      --surface: #121214; 
+      --border: #27272a;
+      --accent: #2563eb; 
+      --accent-h: #3b82f6; 
+      --text: #f4f4f5; 
+      --muted: #a1a1aa;
+      --error: #ef4444; 
+      --success: #10b981; 
+      --radius: 8px;
     }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     
-    .login-container { background: var(--surface); border: 1px solid var(--border); padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: fadeIn 0.4s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: 100vh; 
+    }
     
-    .brand { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
-    .brand i { color: var(--accent); font-size: 32px; }
-    .subtitle { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+    .login-container { 
+      background: var(--surface); 
+      border: 1px solid var(--border); 
+      padding: 32px; 
+      border-radius: var(--radius); 
+      width: 100%; 
+      max-width: 400px; 
+    }
     
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .input-wrapper { position: relative; display: flex; align-items: center; }
-    .input-wrapper i { position: absolute; left: 14px; color: var(--muted); font-size: 18px; }
-    .input-wrapper input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 12px 12px 40px; border-radius: var(--radius); outline: none; font-size: 14px; transition: border 0.2s; }
-    .input-wrapper input:focus { border-color: var(--accent); }
+    .header-panel { text-align: center; margin-bottom: 24px; }
+    .header-panel h2 { font-size: 20px; font-weight: 600; }
+    .header-panel p { color: var(--muted); font-size: 13px; margin-top: 4px; }
     
-    .btn-primary { width: 100%; background: var(--accent); color: #fff; border: none; padding: 12px; border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
-    .btn-primary:hover { background: var(--accent-h); }
-    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
     
-    .footer-links { text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted); }
-    .footer-links a { color: var(--accent-h); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .footer-links a:hover { color: #fff; }
+    .form-control { 
+      width: 100%; 
+      background: var(--bg); 
+      border: 1px solid var(--border); 
+      border-radius: var(--radius); 
+      padding: 10px 12px; 
+      color: var(--text); 
+      font-size: 14px; 
+    }
+    .form-control:focus { outline: none; border-color: var(--accent); }
     
-    .msg { padding: 12px; border-radius: var(--radius); font-size: 13px; margin-bottom: 20px; display: none; font-weight: 500; }
-    .msg.error { display: flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); }
-    .msg.success { display: flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .btn-action { 
+      width: 100%; 
+      background: var(--accent); 
+      color: #fff; 
+      border: none; 
+      padding: 12px; 
+      border-radius: var(--radius); 
+      font-size: 14px; 
+      font-weight: 500; 
+      cursor: pointer; 
+      transition: background 0.2s; 
+    }
+    .btn-action:hover { background: var(--accent-h); }
+    .btn-action:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+    
+    .msg { padding: 10px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; display: none; align-items: center; gap: 8px; }
+    .msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: #fca5a5; }
+    .msg.success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: #a7f3d0; }
+    
+    .back-link { text-align: center; margin-top: 20px; font-size: 13px; }
+    .back-link a { color: var(--muted); text-decoration: none; }
+    .back-link a:hover { color: var(--text); text-underline-offset: 3px; text-decoration: underline; }
   </style>
 </head>
 <body>
 
   <div class="login-container">
-    <div class="brand"><i class="ph-fill ph-hexagon"></i> StockControl</div>
-    <p class="subtitle">Registrar novo operador de sistema</p>
-
-    <div id="msg" class="msg"></div>
-
-    <div class="form-group">
-      <label>Definir Usuário</label>
-      <div class="input-wrapper">
-        <i class="ph ph-user-plus"></i>
-        <input type="text" id="txtLogin" placeholder="Nome de usuário"/>
-      </div>
+    <div class="header-panel">
+      <h2>Criar Conta de Operador</h2>
+      <p>O login criado será estritamente sensível a maiúsculas e acentos.</p>
     </div>
 
-    <div class="form-group">
-      <label>Definir Chave de Acesso</label>
-      <div class="input-wrapper">
-        <i class="ph ph-lock-key"></i>
-        <input type="password" id="txtSenha" placeholder="Mínimo de 6 caracteres"/>
+    <div id="msg-status" class="msg"></div>
+
+    <form id="formCadastro" onsubmit="registrarOperador(event)">
+      <div class="form-group">
+        <label for="login">Login de Usuário</label>
+        <input type="text" id="login" class="form-control" placeholder="Ex: admin, matue, Matuê" required maxlength="50"/>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Confirmar Chave de Acesso</label>
-      <div class="input-wrapper">
-        <i class="ph ph-lock-key-open"></i>
-        <input type="password" id="txtConfirm" placeholder="Repita a senha"/>
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" class="form-control" placeholder="Mínimo 6 caracteres" required/>
       </div>
-    </div>
 
-    <button class="btn-primary" id="btnCadastrar" onclick="realizarCadastro()">Registrar Credencial</button>
+      <div class="form-group">
+        <label for="confirmSenha">Confirmar Senha</label>
+        <input type="password" id="confirmSenha" class="form-control" placeholder="Repita a senha exatamente" required/>
+      </div>
 
-    <div class="footer-links">
-      Já possui credencial? <a href="index.html">Fazer Login</a>
+      <button type="submit" id="btnRegistrar" class="btn-action">Registrar no Estoque</button>
+    </form>
+
+    <div class="back-link">
+      <a href="index.html"><i class="ph ph-arrow-left"></i> Voltar para o Login</a>
     </div>
   </div>
 
   <script>
-    async function realizarCadastro() {
-      const login = document.getElementById('txtLogin').value.trim();
-      const senha = document.getElementById('txtSenha').value;
-      const confirmSenha = document.getElementById('txtConfirm').value;
-      const msg = document.getElementById('msg');
-      const btn = document.getElementById('btnCadastrar');
+    async function registrarOperador(event) {
+      event.preventDefault();
+      const login = document.getElementById('login').value;
+      const senha = document.getElementById('senha').value;
+      const confirmSenha = document.getElementById('confirmSenha').value;
+      const msg = document.getElementById('msg-status');
+      const btn = document.getElementById('btnRegistrar');
 
-      msg.className = 'msg';
-      msg.innerHTML = '';
+      msg.style.display = 'none';
 
-      if (!login || !senha || !confirmSenha) {
-        msg.className = 'msg error';
-        msg.innerHTML = '<i class="ph ph-warning-circle"></i> Preencha todos os campos.';
-        return;
-      }
       if (senha.length < 6) {
         msg.className = 'msg error';
         msg.innerHTML = '<i class="ph ph-warning-circle"></i> A senha deve ter no mínimo 6 caracteres.';
+        msg.style.display = 'flex';
         return;
       }
+
       if (senha !== confirmSenha) {
         msg.className = 'msg error';
-        msg.innerHTML = '<i class="ph ph-warning-circle"></i> As senhas não conferem.';
+        msg.innerHTML = '<i class="ph ph-warning-circle"></i> As senhas informadas não coincidem.';
+        msg.style.display = 'flex';
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = 'Processando...';
+      btn.textContent = 'Processando registro...';
 
       try {
         const res = await fetch('/auth/cadastro', {
@@ -120,18 +152,22 @@
 
         if (res.ok) {
           msg.className = 'msg success';
-          msg.innerHTML = '<i class="ph ph-check-circle"></i> Operador registrado! Redirecionando...';
-          setTimeout(() => window.location.href = 'index.html', 1800);
+          msg.innerHTML = '<i class="ph ph-check-circle"></i> Operador registrado com sucesso! Redirecionando...';
+          msg.style.display = 'flex';
+          setTimeout(() => window.location.href = 'index.html', 1500);
         } else {
+          btn.disabled = false;
+          btn.textContent = 'Registrar no Estoque';
           msg.className = 'msg error';
-          msg.innerHTML = '<i class="ph ph-x-circle"></i> Falha: Usuário já pode existir.';
+          msg.innerHTML = '<i class="ph ph-x-circle"></i> Erro: Este login já está sendo utilizado.';
+          msg.style.display = 'flex';
         }
       } catch (e) {
-        msg.className = 'msg error';
-        msg.innerHTML = '<i class="ph ph-wifi-slash"></i> Erro ao conectar ao servidor.';
-      } finally {
         btn.disabled = false;
-        if(msg.className !== 'msg success') btn.textContent = 'Registrar Credencial';
+        btn.textContent = 'Registrar no Estoque';
+        msg.className = 'msg error';
+        msg.innerHTML = '<i class="ph ph-warning-circle"></i> Falha de comunicação com o servidor.';
+        msg.style.display = 'flex';
       }
     }
   </script>

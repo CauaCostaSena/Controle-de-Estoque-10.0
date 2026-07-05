@@ -2,13 +2,11 @@ package br.com.example.controller;
 
 import br.com.example.dao.ProdutoDAO;
 import br.com.example.model.Produto;
-import br.com.example.model.Usuario;
-import br.com.example.model.Categoria;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
+@CrossOrigin("*") // Libera acesso para o HTML
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
@@ -21,56 +19,29 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> salvarProduto(@RequestBody Map<String, Object> dados) {
+    // Mudamos de Map para o objeto Produto direto! O Spring Boot converte tudo sozinho.
+    public ResponseEntity<String> salvarProduto(@RequestBody Produto p) {
         try {
-            String nome = (String) dados.get("nome");
-            int qtd = Integer.parseInt(dados.get("quantidade").toString());
-            double preco = Double.parseDouble(dados.get("preco").toString());
-            
-            int idUsuario = Integer.parseInt(dados.get("idUsuario").toString());
-            int idCategoria = Integer.parseInt(dados.get("idCategoria").toString());
-            
-            Produto p = new Produto();
-            p.setNome(nome);
-            p.setQuantidade(qtd);
-            p.setPreco(preco);
-            
-            Usuario u = new Usuario();
-            u.setId(idUsuario);
-            p.setUsuario(u);
-            
-            Categoria c = new Categoria();
-            c.setId(idCategoria);
-            p.setCategoria(c);
-
             boolean sucesso = produtoDAO.salvar(p);
-            if (sucesso) return ResponseEntity.ok("Produto cadastrado com sucesso!");
-            return ResponseEntity.badRequest().body("Erro ao cadastrar no banco de dados.");
+            
+            if (sucesso) {
+                return ResponseEntity.ok("Produto cadastrado com sucesso!");
+            }
+            return ResponseEntity.badRequest().body("Erro ao salvar produto no banco.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro de processamento: " + e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarProduto(@PathVariable int id, @RequestBody Map<String, Object> dados) {
+    public ResponseEntity<String> editarProduto(@PathVariable int id, @RequestBody Produto p) {
         try {
-            String nome = (String) dados.get("nome");
-            int qtd = Integer.parseInt(dados.get("quantidade").toString());
-            double preco = Double.parseDouble(dados.get("preco").toString());
-            int idCategoria = Integer.parseInt(dados.get("idCategoria").toString());
-            
-            Produto p = new Produto();
-            p.setId(id);
-            p.setNome(nome);
-            p.setQuantidade(qtd);
-            p.setPreco(preco);
-            
-            Categoria c = new Categoria();
-            c.setId(idCategoria);
-            p.setCategoria(c);
+            p.setId(id); // Garante que estamos atualizando o ID correto da URL
             
             boolean sucesso = produtoDAO.atualizar(p);
-            if (sucesso) return ResponseEntity.ok("Produto atualizado com sucesso!");
+            if (sucesso) {
+                return ResponseEntity.ok("Produto atualizado com sucesso!");
+            }
             return ResponseEntity.badRequest().body("Erro ao atualizar o produto.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -80,7 +51,9 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarProduto(@PathVariable int id) {
         boolean sucesso = produtoDAO.excluir(id);
-        if (sucesso) return ResponseEntity.ok("Excluído com sucesso");
+        if (sucesso) {
+            return ResponseEntity.ok("Excluído com sucesso");
+        }
         return ResponseEntity.badRequest().body("Erro ao excluir.");
     }
 }

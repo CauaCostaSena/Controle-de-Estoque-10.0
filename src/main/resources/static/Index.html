@@ -8,233 +8,269 @@
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
-      --bg-dark: #0f172a; --surface: rgba(30, 41, 59, 0.7); 
-      --border: rgba(255, 255, 255, 0.1); --text: #f8fafc; --muted: #94a3b8;
-      --primary: #6366f1; --primary-hover: #4f46e5; --danger: #ef4444; --success: #10b981;
+      --bg-dark: #0f172a; 
+      --surface: rgba(30, 41, 59, 0.7); 
+      --border: rgba(255, 255, 255, 0.1); 
+      --text: #f8fafc; 
+      --muted: #94a3b8;
+      --primary: #6366f1; 
+      --primary-hover: #4f46e5; 
+      --danger: #ef4444; 
+      --success: #10b981;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     
-    /* FUNDO ANIMADO */
     body { 
+      background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
       color: var(--text); 
-      display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden;
-      background: linear-gradient(-45deg, #0f172a, #1e1b4b, #020617, #1e293b);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-    }
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    /* CAIXA COM EFEITO DE VIDRO (GLASSMORPHISM) */
-    .login-box { 
-      background: var(--surface); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 48px 40px; 
-      border-radius: 16px; 
-      border: 1px solid var(--border); 
-      width: 100%; max-width: 420px; 
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-      position: relative;
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      height: 100vh; 
       overflow: hidden;
     }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .logo { font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
-    .logo i { color: var(--primary); font-size: 36px; animation: float 3s ease-in-out infinite; }
-    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
-    
-    .subtitle { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 32px; }
-    
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-    .input-wrapper { position: relative; display: flex; align-items: center; }
-    .input-wrapper i { position: absolute; left: 14px; color: var(--muted); font-size: 18px; }
-    .input-wrapper input { 
-      width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); 
-      color: var(--text); padding: 14px 14px 14px 44px; border-radius: 8px; outline: none; transition: all 0.3s; 
+
+    .login-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 40px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
-    .input-wrapper input:focus { border-color: var(--primary); background: rgba(0,0,0,0.4); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
-    
-    .btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3); }
-    .btn:active { transform: scale(0.97); }
-    
-    .switch-mode { text-align: center; margin-top: 24px; font-size: 14px; color: var(--muted); }
-    .switch-mode a { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; transition: color 0.2s; }
-    .switch-mode a:hover { color: #818cf8; text-decoration: underline; }
 
-    .msg { padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; display: none; text-align: center; }
-    .msg.error { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-    
-    /* ALTERNÂNCIA DE TELAS */
-    .view-section { display: none; animation: fadeIn 0.4s ease; }
-    .view-section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .logo-section {
+      text-align: center;
+      margin-bottom: 32px;
+    }
 
-    /* TELA DE CARREGAMENTO (OVERLAY) */
+    .logo-section i {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .logo-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-section p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px 12px 44px;
+      color: var(--text);
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+    }
+
+    .msg {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #fca5a5;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .register-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* LOADER COMPONENT */
     .loader-overlay {
-      position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 9999; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
     }
     .loader-overlay.active { opacity: 1; pointer-events: auto; }
-    .loader-spinner { font-size: 48px; color: var(--primary); animation: spin 1s linear infinite; margin-bottom: 16px; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .loader-text { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; animation: pulseText 1.5s ease-in-out infinite; }
-    @keyframes pulseText { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .loader-spinner { font-size: 48px; color: var(--primary); animation: spin 1s linear infinite; }
+    .loader-text { margin-top: 16px; font-size: 16px; font-weight: 500; color: var(--text); }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <div class="login-box">
-    
-    <div id="view-login" class="view-section active">
-      <div class="logo"><i class="ph-fill ph-package"></i> StockControl</div>
-      <p class="subtitle">Acesse o sistema de gestão de estoque</p>
+  <div class="login-container">
+    <div class="logo-section">
+      <i class="ph ph-package"></i>
+      <h2>StockControl</h2>
+      <p>Gerenciamento de Estoque Blindado</p>
+    </div>
 
-      <div id="msg-login" class="msg error"></div>
+    <div id="msg-erro" class="msg"></div>
 
+    <form id="formLogin" onsubmit="efetuarLogin(event)">
       <div class="form-group">
-        <label>Usuário</label>
+        <label for="login">Usuário</label>
         <div class="input-wrapper">
           <i class="ph ph-user"></i>
-          <input type="text" id="logUser" placeholder="Digite seu usuário"/>
+          <input type="text" id="login" class="form-control" placeholder="Digite seu usuário" required maxlength="50" autocomplete="username"/>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Senha</label>
+        <label for="senha">Senha</label>
         <div class="input-wrapper">
-          <i class="ph ph-lock-key"></i>
-          <input type="password" id="logSenha" placeholder="Digite sua senha"/>
+          <i class="ph ph-lock"></i>
+          <input type="password" id="senha" class="form-control" placeholder="Digite sua senha" required autocomplete="current-password"/>
         </div>
       </div>
 
-      <button class="btn" onclick="realizarLogin()">Entrar <i class="ph ph-sign-in"></i></button>
+      <button type="submit" class="btn-submit">
+        Acessar Sistema <i class="ph ph-arrow-right"></i>
+      </button>
+    </form>
 
-      <div class="switch-mode">
-        Ainda não tem acesso? <a onclick="trocarTela('view-register')">Criar uma conta</a>
-      </div>
+    <div class="register-link">
+      Novo operador? <a href="cadastro.html">Cadastrar Conta</a>
     </div>
-
-    <div id="view-register" class="view-section">
-      <div class="logo"><i class="ph-fill ph-package"></i> StockControl</div>
-      <p class="subtitle">Cadastre-se para gerenciar seu estoque</p>
-
-      <div id="msg-register" class="msg error"></div>
-
-      <div class="form-group">
-        <label>Novo Usuário</label>
-        <div class="input-wrapper">
-          <i class="ph ph-user-plus"></i>
-          <input type="text" id="regUser" placeholder="Crie um nome de usuário"/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Crie uma Senha</label>
-        <div class="input-wrapper">
-          <i class="ph ph-lock-key"></i>
-          <input type="password" id="regSenha" placeholder="Crie uma senha forte"/>
-        </div>
-      </div>
-
-      <button class="btn" onclick="realizarCadastro()">Cadastrar-se <i class="ph ph-rocket-launch"></i></button>
-
-      <div class="switch-mode">
-        Já possui uma conta? <a onclick="trocarTela('view-login')">Fazer Login</a>
-      </div>
-    </div>
-
   </div>
 
-  <div class="loader-overlay" id="loader">
+  <!-- Loader Global -->
+  <div id="loader" class="loader-overlay">
     <i class="ph ph-spinner loader-spinner"></i>
-    <div class="loader-text" id="loader-text">Preparando seu ambiente...</div>
+    <div id="loader-text" class="loader-text">Autenticando...</div>
   </div>
 
   <script>
-    // Função para alternar entre Login e Cadastro
-    function trocarTela(idTela) {
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      document.getElementById(idTela).classList.add('active');
-      // Limpa as mensagens de erro ao trocar de tela
-      document.getElementById('msg-login').style.display = 'none';
-      document.getElementById('msg-register').style.display = 'none';
-    }
+    async function efetuarLogin(event) {
+      event.preventDefault();
+      const loginInput = document.getElementById('login').value; // Mantém case exato para collation binary
+      const senhaInput = document.getElementById('senha').value;
+      const msg = document.getElementById('msg-erro');
 
-    // Lógica de Login
-    async function realizarLogin() {
-      const login = document.getElementById('logUser').value.trim();
-      const senha = document.getElementById('logSenha').value;
-      const msg = document.getElementById('msg-login');
       msg.style.display = 'none';
+      mostrarLoader("Validando credenciais...");
 
-      if (!login || !senha) {
-        msg.textContent = 'Preencha usuário e senha.';
-        msg.style.display = 'block';
-        return;
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ login: loginInput, senha: senhaInput })
+        });
+
+        if (res.ok) {
+          const usuarioLogado = await res.json();
+          // Salva dados essenciais da sessão
+          sessionStorage.setItem('usuarioId', usuarioLogado.id);
+          sessionStorage.setItem('usuarioLogin', usuarioLogado.login);
+
+          document.getElementById('loader-text').textContent = "Acesso autorizado! Carregando painel...";
+          const spinner = document.querySelector('.loader-spinner');
+          spinner.classList.replace('ph-spinner', 'ph-check-circle');
+          spinner.style.color = 'var(--success)';
+          spinner.style.animation = 'none';
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          esconderLoader();
+          msg.innerHTML = '<i class="ph ph-warning-circle"></i> Usuário ou senha incorretos (Sensível a maiúsculas/acentos).';
+          msg.style.display = 'flex';
+        }
+      } catch (error) {
+        esconderLoader();
+        msg.innerHTML = '<i class="ph ph-warning-circle"></i> Erro ao conectar com o servidor.';
+        msg.style.display = 'flex';
       }
-
-      // Aqui você faz a chamada real para o seu backend. 
-      // Por enquanto, vou simular o carregamento para você ver a animação
-      mostrarLoader("Autenticando usuário...");
-      
-      setTimeout(() => {
-        // Simulação de redirecionamento com sucesso
-        sessionStorage.setItem('usuarioLogin', login);
-        window.location.href = 'dashboard.html';
-      }, 1500); // Aguarda 1.5s para mostrar a animação antes de ir para a dashboard
     }
 
-    // Lógica de Cadastro com Animação de Carregamento
-    async function realizarCadastro() {
-      const login = document.getElementById('regUser').value.trim();
-      const senha = document.getElementById('regSenha').value;
-      const msg = document.getElementById('msg-register');
-      msg.style.display = 'none';
-
-      if (!login || !senha) {
-        msg.textContent = 'Preencha todos os campos para cadastrar.';
-        msg.style.display = 'block';
-        return;
-      }
-
-      // ATIVA A TELA DE CARREGAMENTO!
-      mostrarLoader("Criando sua conta...");
-
-      // Simulação da requisição ao banco de dados (que costuma levar de 1 a 2 segundos)
-      setTimeout(() => {
-        // Aqui dentro você colocaria a resposta do seu fetch('/auth/register')
-        
-        // Simulação de sucesso:
-        sessionStorage.setItem('usuarioLogin', login);
-        
-        // Troca o texto do loader para dar um feedback bacana antes de redirecionar
-        document.getElementById('loader-text').textContent = "Conta criada com sucesso! Redirecionando...";
-        document.querySelector('.loader-spinner').classList.replace('ph-spinner', 'ph-check-circle');
-        document.querySelector('.loader-spinner').style.color = 'var(--success)';
-        document.querySelector('.loader-spinner').style.animation = 'none'; // para de girar
-
-        // Redireciona logo em seguida
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1200);
-
-      }, 2000); // 2 segundos de loading simulado
-    }
-
-    // Função auxiliar para exibir a tela de loading
     function mostrarLoader(texto) {
-      const loader = document.getElementById('loader');
-      const textEl = document.getElementById('loader-text');
-      textEl.textContent = texto;
-      loader.classList.add('active');
+      document.getElementById('loader-text').textContent = texto;
+      document.getElementById('loader').classList.add('active');
+    }
+
+    function esconderLoader() {
+      document.getElementById('loader').classList.remove('active');
     }
   </script>
 </body>
