@@ -17,131 +17,166 @@
     body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
     
     /* SIDEBAR */
-    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
-    .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 32px; }
-    .brand i { color: var(--primary); font-size: 28px; }
-    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
-    .menu a { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
-    .menu a:hover, .menu a.active { background: var(--surface-hover); color: #fff; }
-    .menu a.active { border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding-left: 8px; }
-    .user-info { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
-    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 18px; }
-
-    /* CONTENT layout */
-    .main-content { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .header h1 { font-size: 26px; font-weight: 700; }
+    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+    .logo { padding: 24px; font-size: 20px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+    .logo i { color: var(--primary); font-size: 28px; }
+    .nav { padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--muted); text-decoration: none; border-radius: 8px; transition: 0.2s; font-weight: 500; }
+    .nav-item:hover { background: var(--surface-hover); color: var(--text); }
+    .nav-item.active { background: var(--primary); color: #fff; }
+    .nav-item i { font-size: 20px; }
     
-    .btn-primary { background: var(--primary); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
-    .btn-primary:hover { background: var(--primary-hover); }
+    /* PERFIL DO USUÁRIO NA SIDEBAR */
+    .user-info { padding: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .user-details { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text); }
+    .user-details i { font-size: 24px; color: var(--muted); }
+    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 20px; padding: 4px; border-radius: 4px; transition: 0.2s; }
+    .btn-logout:hover { background: rgba(239, 68, 68, 0.15); }
 
-    /* TABLE DESIGN */
-    .table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-    th { background: rgba(15, 23, 42, 0.4); padding: 16px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
-    td { padding: 16px; border-bottom: 1px solid var(--border); color: #e2e8f0; }
+    /* MAIN CONTENT */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .header { height: 80px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .content { padding: 32px; overflow-y: auto; flex: 1; }
+    
+    /* TOOLBAR & SEARCH */
+    .toolbar { display: flex; gap: 16px; margin-bottom: 24px; align-items: center; justify-content: space-between; }
+    .search-input { flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); outline: none; transition: 0.2s; font-size: 14px; }
+    .search-input:focus { border-color: var(--primary); }
+    
+    /* BUTTONS */
+    .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; border: none; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { background: var(--surface-hover); }
+    .btn-secondary.active { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); color: #fca5a5; }
+    .btn-icon { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px; border-radius: 4px; transition: 0.2s; }
+    .btn-icon:hover { color: var(--text); background: var(--surface-hover); }
+    .btn-icon.delete:hover { color: var(--danger); background: rgba(239, 68, 68, 0.15); }
+
+    /* CARD & TABLE */
+    .card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 16px 24px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { font-size: 14px; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255, 255, 255, 0.02); }
     
-    .actions { display: flex; gap: 8px; }
-    .btn-icon { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-    .btn-icon:hover { background: var(--surface-hover); color: var(--primary); }
-    .btn-icon.delete:hover { color: var(--danger); }
-    .btn-icon.movement:hover { color: var(--success); }
+    /* BADGE DE ESTOQUE BAIXO */
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 8px; display: inline-block; }
+    .badge.danger { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid var(--danger); }
 
-    /* NOTIFICATION TOAST */
-    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; gap: 10px; font-size: 14px; }
-    .toast.success { border-color: var(--success); color: #a7f3d0; }
-    .toast.error { border-color: var(--danger); color: #fca5a5; }
-
-    /* MODAL DESIGN */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.7); backdrop-filter: blur(4px); z-index: 999; display: none; align-items: center; justify-content: center; }
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 460px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-    .modal h2 { font-size: 18px; margin-bottom: 20px; color: #fff; }
+    .modal { background: var(--surface); width: 100%; max-width: 450px; border-radius: 12px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .modal-header h2 { font-size: 18px; font-weight: 600; }
+    .close-modal { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 24px; }
     
     .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-    .form-control { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 14px; }
-    .form-control:focus { outline: none; border-color: var(--primary); }
-    
+    .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500; }
+    .form-control { width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; }
+    .form-control:focus { border-color: var(--primary); }
+    .form-control:disabled { opacity: 0.5; cursor: not-allowed; }
     .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 16px; border-radius: 8px; cursor: pointer; }
-    .btn-cancel:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    
+    /* TOAST NOTIFICATION */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; border-radius: 8px; font-weight: 500; font-size: 14px; display: none; align-items: center; gap: 12px; z-index: 1000; animation: slideIn 0.3s ease; }
+    .toast.success { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #a7f3d0; }
+    .toast.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div>
-      <div class="brand"><i class="ph ph-package"></i> <span>StockControl</span></div>
-      <ul class="menu">
-        <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
-        <li><a href="produtos.html" class="active"><i class="ph ph-cube"></i> Produtos</a></li>
-        <li><a href="categorias.html"><i class="ph ph-folders"></i> Categorias</a></li>
-        <li><a href="movimentacoes.html"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
-      </ul>
+    <div class="logo">
+      <i class="ph-fill ph-package"></i>
+      StockControl
     </div>
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item"><i class="ph ph-squares-four"></i> Dashboard</a>
+      <a href="produtos.html" class="nav-item active"><i class="ph ph-box-box"></i> Produtos</a>
+      <a href="categorias.html" class="nav-item"><i class="ph ph-tag"></i> Categorias</a>
+      <a href="movimentacoes.html" class="nav-item"><i class="ph ph-arrows-left-right"></i> Movimentações</a>
+    </nav>
+    
     <div class="user-info">
-      <div><i class="ph ph-user-circle"></i> <span id="sessao-usuario">@operador</span></div>
-      <button class="btn-logout" onclick="sessionStorage.clear(); window.location.href='index.html';"><i class="ph ph-sign-out"></i></button>
+      <div class="user-details">
+        <i class="ph ph-user-circle"></i> 
+        <span id="sessao-usuario">@operador</span>
+      </div>
+      <button class="btn-logout" title="Sair do Sistema" onclick="fazerLogout()"><i class="ph ph-sign-out"></i></button>
     </div>
   </aside>
 
-  <main class="main-content">
-    <div class="header">
-      <h1>Gerenciamento de Produtos</h1>
-      <button class="btn-primary" onclick="abrirModalCadastro()"><i class="ph ph-plus"></i> Novo Produto</button>
-    </div>
+  <main class="main">
+    <header class="header">
+      <h2>Gestão de Produtos</h2>
+      <button class="btn btn-primary" onclick="abrirModalProduto()">
+        <i class="ph ph-plus"></i> Novo Produto
+      </button>
+    </header>
+    
+    <div class="content">
+      
+      <div class="toolbar">
+        <input type="text" id="buscaProduto" class="search-input" placeholder="Pesquisar por nome ou ID..." onkeyup="filtrarTabela()">
+        <button class="btn btn-secondary" id="btnFiltroEstoque" onclick="alternarFiltroEstoque()">
+          <i class="ph ph-warning-circle"></i> Estoque Baixo
+        </button>
+      </div>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th width="8%">ID</th>
-            <th width="32%">Nome do Produto</th>
-            <th width="15%">Estoque</th>
-            <th width="15%">Preço Unitário</th>
-            <th width="15%">Categoria</th>
-            <th width="15%">Ações</th>
-          </tr>
-        </thead>
-        <tbody id="tabela-produtos">
-          </tbody>
-      </table>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome do Produto</th>
+              <th>Categoria</th>
+              <th>Quantidade</th>
+              <th>Preço Unit.</th>
+              <th>Operador</th> <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            </tbody>
+        </table>
+      </div>
     </div>
   </main>
 
   <div class="modal-overlay" id="modalProduto">
     <div class="modal">
-      <h2 id="modalTitle">Cadastrar Novo Produto</h2>
+      <div class="modal-header">
+        <h2 id="modalTitle">Novo Produto</h2>
+        <button class="close-modal" onclick="fecharModalProduto()"><i class="ph ph-x"></i></button>
+      </div>
       <form id="formProduto" onsubmit="salvarProduto(event)">
-        <input type="hidden" id="prodId"/>
-        
+        <input type="hidden" id="prodId">
         <div class="form-group">
-          <label for="prodNome">Nome do Produto</label>
-          <input type="text" id="prodNome" class="form-control" required maxlength="100"/>
+          <label>Nome do Produto</label>
+          <input type="text" id="prodNome" class="form-control" required>
         </div>
-        
         <div class="form-group">
-          <label for="prodQtd">Estoque Inicial</label>
-          <input type="number" id="prodQtd" class="form-control" min="0" required value="0"/>
+          <label>Categoria</label>
+          <select id="prodCategoria" class="form-control" required></select>
         </div>
-        
-        <div class="form-group">
-          <label for="prodPreco">Preço Unitário (R$)</label>
-          <input type="number" id="prodPreco" class="form-control" step="0.01" min="0" required value="0.00"/>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Quantidade</label>
+            <input type="number" id="prodQtd" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label>Preço (R$)</label>
+            <input type="number" id="prodPreco" class="form-control" step="0.01" min="0" required>
+          </div>
         </div>
-        
-        <div class="form-group">
-          <label for="prodCategoria">Categoria Vinculada</label>
-          <select id="prodCategoria" class="form-control" required>
-            </select>
-        </div>
-
         <div class="modal-footer">
-          <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-          <button type="submit" class="btn-primary">Salvar Produto</button>
+          <button type="button" class="btn btn-secondary" onclick="fecharModalProduto()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
       </form>
     </div>
@@ -149,27 +184,26 @@
 
   <div class="modal-overlay" id="modalMovimentacao">
     <div class="modal">
-      <h2>Lançar Movimentação de Estoque</h2>
-      <form id="formMov" onsubmit="lancarMovimentacao(event)">
-        <input type="hidden" id="movProdId"/>
+      <div class="modal-header">
+        <h2 id="modalMovTitle">Movimentar Estoque</h2>
+        <button class="close-modal" onclick="fecharModalMov()"><i class="ph ph-x"></i></button>
+      </div>
+      <form id="formMovimentacao" onsubmit="lancarMovimentacao(event)">
+        <input type="hidden" id="movProdId">
         <div class="form-group">
-          <label>Produto Selecionado</label>
-          <input type="text" id="movProdNome" class="form-control" readonly style="opacity: 0.6;"/>
-        </div>
-        <div class="form-group">
-          <label for="movTipo">Tipo de Operação</label>
+          <label>Tipo de Movimentação</label>
           <select id="movTipo" class="form-control" required>
-            <option value="ENTRADA">ENTRADA (Aumento de Estoque)</option>
-            <option value="SAIDA">SAÍDA (Baixa de Estoque)</option>
+            <option value="ENTRADA">Entrada (+)</option>
+            <option value="SAIDA">Saída (-)</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="movQtd">Quantidade</label>
-          <input type="number" id="movQtd" class="form-control" min="1" required value="1"/>
+          <label>Quantidade</label>
+          <input type="number" id="movQtd" class="form-control" min="1" required>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-cancel" onclick="fecharModalMov()">Cancelar</button>
-          <button type="submit" class="btn-primary" style="background:var(--success)">Confirmar Operação</button>
+          <button type="button" class="btn btn-secondary" onclick="fecharModalMov()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Confirmar</button>
         </div>
       </form>
     </div>
@@ -178,81 +212,148 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    // --- AUTENTICAÇÃO E SESSÃO (RESTAURADO) ---
     const operId = sessionStorage.getItem('usuarioId');
-    if(!operId) window.location.href = 'index.html';
-    document.getElementById('sessao-usuario').textContent = `@${sessionStorage.getItem('usuarioLogin')}`;
+    const operLogin = sessionStorage.getItem('usuarioLogin');
+    
+    // Se não tiver login, volta para a tela inicial
+    if(!operId) {
+      window.location.href = 'index.html';
+    }
+    // Mostra o nome do usuário na tela
+    document.getElementById('sessao-usuario').textContent = `@${operLogin}`;
 
+    function fazerLogout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    const API_PRODUTOS = '/produtos'; 
+    const API_CATEGORIAS = '/categorias';
+
+    // --- LÓGICA DE PESQUISA E FILTRO DE ESTOQUE ---
+    let mostrandoApenasEstoqueBaixo = false;
+
+    function alternarFiltroEstoque() {
+      mostrandoApenasEstoqueBaixo = !mostrandoApenasEstoqueBaixo;
+      const btn = document.getElementById('btnFiltroEstoque');
+      
+      if (mostrandoApenasEstoqueBaixo) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+      
+      filtrarTabela();
+    }
+
+    function filtrarTabela() {
+      const termo = document.getElementById('buscaProduto').value.toLowerCase();
+      const linhas = document.querySelectorAll('#tableBody tr');
+
+      linhas.forEach(linha => {
+        const id = linha.cells[0].textContent.toLowerCase();
+        const nome = linha.cells[1].textContent.toLowerCase();
+        const quantidadeTexto = linha.cells[3].textContent.replace('Baixo', '').trim(); 
+        const quantidade = parseInt(quantidadeTexto);
+        
+        const atendeBusca = nome.includes(termo) || id.includes(termo);
+        const atendeEstoque = mostrandoApenasEstoqueBaixo ? (quantidade <= 5) : true;
+
+        if (atendeBusca && atendeEstoque) {
+          linha.style.display = '';
+        } else {
+          linha.style.display = 'none';
+        }
+      });
+    }
+
+    // --- CARREGAMENTO DE DADOS ---
     async function carregarProdutos() {
       try {
-        const res = await fetch('/produtos');
-        const produtos = await res.json();
-        const tabela = document.getElementById('tabela-produtos');
-        tabela.innerHTML = '';
-
-        if(produtos.length === 0) {
-          tabela.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted);">Nenhum produto cadastrado no banco estoque_db.</td></tr>';
-          return;
-        }
-
-        produtos.forEach(p => {
-          const nomeCat = p.categoria ? (p.categoria.nome || p.categoria) : 'Sem categoria';
-          tabela.innerHTML += `
-            <tr>
-              <td>#${p.id}</td>
-              <td style="font-weight:600; color:#fff;">${p.nome}</td>
-              <td>${p.quantidade} un</td>
-              <td>R$ ${p.preco.toFixed(2)}</td>
-              <td><span style="color:var(--muted);">${nomeCat}</span></td>
-              <td>
-                <div class="actions">
-                  <button class="btn-icon" onclick="abrirModalMov(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" title="Movimentar Estoque"><i class="ph ph-arrows-left-right"></i></button>
-                  <button class="btn-icon" onclick="prepararEdicao(${p.id}, '${p.nome.replace(/'/g, "\\'")}', ${p.quantidade}, ${p.preco}, ${p.categoria?.id || p.id_categoria})" title="Editar"><i class="ph ph-pencil-simple"></i></button>
-                  <button class="btn-icon delete" onclick="excluirProduto(${p.id})" title="Excluir"><i class="ph ph-trash"></i></button>
-                </div>
-              </td>
-            </tr>
-          `;
-        });
+        const res = await fetch(API_PRODUTOS);
+        const data = await res.json();
+        renderTable(data);
+        filtrarTabela(); 
       } catch (e) {
-        mostrarToast('Erro ao listar produtos do servidor.', 'error');
+        mostrarToast('Erro ao buscar produtos.', 'error');
       }
     }
 
-    async function carregarCategoriasDropdown() {
+    async function carregarCategorias() {
       try {
-        const res = await fetch('/categorias');
-        const categorias = await res.json();
+        const res = await fetch(API_CATEGORIAS);
+        const data = await res.json();
         const select = document.getElementById('prodCategoria');
-        select.innerHTML = '<option value="">-- Selecione uma Categoria --</option>';
-        categorias.forEach(c => {
-          select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-        });
-      } catch (e) { console.error('Erro categorias dropdown', e); }
+        select.innerHTML = '<option value="">Selecione...</option>' + 
+          data.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+      } catch (e) { console.error('Erro ao buscar categorias.'); }
     }
 
-    function abrirModalCadastro() {
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = data.map(p => {
+        const catNome = p.categoria ? p.categoria.nome : 'Sem categoria';
+        const catId = p.categoria ? p.categoria.id : '';
+        const precoF = p.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
+        // Pega o nome do usuário que cadastrou o produto
+        const userNome = p.usuario ? p.usuario.login : 'Desconhecido';
+
+        const limiteEstoque = 5; 
+        const alertaEstoque = p.quantidade <= limiteEstoque 
+            ? `<span class="badge danger">Baixo</span>` 
+            : '';
+
+        return `
+          <tr>
+            <td>#${p.id}</td>
+            <td style="font-weight: 500;">${p.nome}</td>
+            <td>${catNome}</td>
+            <td style="font-weight: 600;">${p.quantidade} ${alertaEstoque}</td>
+            <td style="color: var(--success); font-weight: 500;">${precoF}</td>
+            <td><span style="font-size: 13px; color: var(--muted);"><i class="ph ph-user"></i> @${userNome}</span></td>
+            <td>
+              <div class="action-buttons" style="display:flex; gap:8px;">
+                <button class="btn-icon" title="Movimentar Estoque" onclick="prepararMovimentacao(${p.id}, '${p.nome}')">
+                  <i class="ph ph-arrows-left-right"></i>
+                </button>
+                <button class="btn-icon" title="Editar" onclick="prepararEdicao(${p.id}, '${p.nome}', ${p.quantidade}, ${p.preco}, ${catId})">
+                  <i class="ph ph-pencil-simple"></i>
+                </button>
+                <button class="btn-icon delete" title="Excluir" onclick="excluirProduto(${p.id})">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // --- PRODUTOS: SALVAR, EDITAR E EXCLUIR ---
+    function abrirModalProduto() {
       document.getElementById('formProduto').reset();
       document.getElementById('prodId').value = '';
-      document.getElementById('prodQtd').disabled = false; // permite estoque inicial apenas no cadastro
-      document.getElementById('modalTitle').textContent = 'Cadastrar Novo Produto';
+      document.getElementById('prodQtd').disabled = false;
+      document.getElementById('modalTitle').textContent = 'Novo Produto';
       document.getElementById('modalProduto').classList.add('active');
+    }
+
+    function fecharModalProduto() {
+      document.getElementById('modalProduto').classList.remove('active');
     }
 
     function prepararEdicao(id, nome, qtd, preco, catId) {
       document.getElementById('prodId').value = id;
       document.getElementById('prodNome').value = nome;
       document.getElementById('prodQtd').value = qtd;
-      
-      // MUDANÇA AQUI: Agora o campo fica liberado para o usuário corrigir erros de digitação!
       document.getElementById('prodQtd').disabled = false; 
-      
       document.getElementById('prodPreco').value = preco;
       document.getElementById('prodCategoria').value = catId || '';
       document.getElementById('modalTitle').textContent = `Editar Produto #${id}`;
       document.getElementById('modalProduto').classList.add('active');
     }
-
-    function fecharModal() { document.getElementById('modalProduto').classList.remove('active'); }
 
     async function salvarProduto(event) {
       event.preventDefault();
@@ -260,61 +361,66 @@
       const nome = document.getElementById('prodNome').value;
       const quantidade = document.getElementById('prodQtd').value;
       const preco = document.getElementById('prodPreco').value;
-      const idCategoria = document.getElementById('prodCategoria').value;
+      const categoriaId = document.getElementById('prodCategoria').value;
 
+      // O payload agora envia o ID do usuário que está logado DE VERDADE!
       const payload = {
         nome,
         quantidade: parseInt(quantidade),
         preco: parseFloat(preco),
-        // Envia objeto ou id conforme o seu backend Spring preferir (suporta ambos)
-        id_categoria: parseInt(idCategoria),
         id_usuario: parseInt(operId),
-        categoria: { id: parseInt(idCategoria) },
-        usuario: { id: parseInt(operId) }
+        id_categoria: parseInt(categoriaId),
+        usuario: { id: parseInt(operId) },
+        categoria: { id: parseInt(categoriaId) }
       };
 
-      const url = id ? `/produtos/${id}` : '/produtos';
       const method = id ? 'PUT' : 'POST';
+      const url = id ? `${API_PRODUTOS}/${id}` : API_PRODUTOS;
 
       try {
         const res = await fetch(url, {
-          method: method,
+          method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
         if(res.ok) {
-          mostrarToast(id ? 'Produto atualizado!' : 'Produto cadastrado com sucesso!', 'success');
-          fecharModal();
+          mostrarToast('Produto salvo com sucesso!', 'success');
+          fecharModalProduto();
           carregarProdutos();
         } else {
-          mostrarToast('Falha ao salvar produto. Verifique os dados.', 'error');
+          mostrarToast('Erro ao salvar produto.', 'error');
         }
-      } catch (e) { mostrarToast('Erro na conexão com o servidor.', 'error'); }
+      } catch (e) {
+        mostrarToast('Erro de conexão.', 'error');
+      }
     }
 
     async function excluirProduto(id) {
-      if(!confirm('Atenção: Ao excluir o produto, o histórico de movimentações dele será preservado com ID nulo (SET NULL). Deseja continuar?')) return;
+      if(!confirm(`Tem certeza que deseja excluir o produto #${id}? Ele ficará registrado no histórico.`)) return;
+
       try {
-        const res = await fetch(`/produtos/${id}`, { method: 'DELETE' });
+        const res = await fetch(`${API_PRODUTOS}/${id}`, { method: 'DELETE' });
         if(res.ok) {
-          mostrarToast('Produto excluído! Histórico de auditoria preservado.', 'success');
+          mostrarToast('Produto excluído com sucesso.', 'success');
           carregarProdutos();
         } else {
-          const txt = await res.text();
-          mostrarToast('Erro: ' + txt, 'error');
+          mostrarToast('Erro ao excluir.', 'error');
         }
-      } catch (e) { mostrarToast('Erro ao processar exclusão.', 'error'); }
+      } catch (e) { mostrarToast('Erro de conexão.', 'error'); }
     }
 
-    // Controle de Movimentação Rápida
-    function abrirModalMov(id, nome) {
-      document.getElementById('formMov').reset();
+    // --- MOVIMENTAÇÕES MANUAIS ---
+    function prepararMovimentacao(id, nome) {
+      document.getElementById('formMovimentacao').reset();
       document.getElementById('movProdId').value = id;
-      document.getElementById('movProdNome').value = nome;
+      document.getElementById('modalMovTitle').textContent = `Movimentar: ${nome}`;
       document.getElementById('modalMovimentacao').classList.add('active');
     }
-    function fecharModalMov() { document.getElementById('modalMovimentacao').classList.remove('active'); }
+
+    function fecharModalMov() {
+      document.getElementById('modalMovimentacao').classList.remove('active');
+    }
 
     async function lancarMovimentacao(event) {
       event.preventDefault();
@@ -344,22 +450,24 @@
           carregarProdutos();
         } else {
           const txt = await res.text();
-          mostrarToast('Erro: ' + txt, 'error');
+          mostrarToast(txt, 'error');
         }
       } catch (e) { mostrarToast('Erro ao registrar movimentação.', 'error'); }
     }
 
     function mostrarToast(txt, type) {
       const el = document.getElementById('toast');
-      el.textContent = txt;
+      el.innerHTML = type === 'success' 
+        ? `<i class="ph-fill ph-check-circle"></i> ${txt}` 
+        : `<i class="ph-fill ph-warning-circle"></i> ${txt}`;
       el.className = `toast ${type}`;
       el.style.display = 'flex';
-      setTimeout(() => { el.style.display = 'none'; }, 3000);
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
     }
 
     window.onload = () => {
+      carregarCategorias();
       carregarProdutos();
-      carregarCategoriasDropdown();
     };
   </script>
 </body>
