@@ -11,162 +11,203 @@
       --bg: #0f172a; --surface: #1e293b; --surface-hover: #334155;
       --border: #334155; --text: #f8fafc; --muted: #94a3b8;
       --primary: #6366f1; --primary-hover: #4f46e5; --danger: #ef4444; 
-      --success: #10b981; --warning: #f59e0b;
+      --success: #10b981; --warning: #f59e0b; --info: #3b82f6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
     
     /* SIDEBAR */
-    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
-    .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 32px; }
-    .brand i { color: var(--primary); font-size: 28px; }
-    .menu { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
-    .menu a { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
-    .menu a:hover, .menu a.active { background: var(--surface-hover); color: #fff; }
-    .menu a.active { border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding-left: 8px; }
-    .user-info { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
-    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 18px; }
-
-    .main-content { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
-    .header h1 { font-size: 26px; font-weight: 700; }
+    .sidebar { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+    .logo { padding: 24px; font-size: 20px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+    .logo i { color: var(--primary); font-size: 28px; }
+    .nav { padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--muted); text-decoration: none; border-radius: 8px; transition: 0.2s; font-weight: 500; }
+    .nav-item:hover { background: var(--surface-hover); color: var(--text); }
+    .nav-item.active { background: var(--primary); color: #fff; }
+    .nav-item i { font-size: 20px; }
     
-    /* FILTERS COMPONENT */
-    .filters-row { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 10px; display: flex; gap: 16px; align-items: center; }
-    .search-input { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 14px; flex-grow: 1; }
-    .filter-select { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 14px; width: 160px; }
+    /* PERFIL DO USUÁRIO NA SIDEBAR */
+    .user-info { padding: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .user-details { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text); }
+    .user-details i { font-size: 24px; color: var(--muted); }
+    .btn-logout { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 20px; padding: 4px; border-radius: 4px; transition: 0.2s; }
+    .btn-logout:hover { background: rgba(239, 68, 68, 0.15); }
 
-    /* AUDIT TABLE */
-    .table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-    th { background: rgba(15, 23, 42, 0.4); padding: 16px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
-    td { padding: 16px; border-bottom: 1px solid var(--border); color: #e2e8f0; }
+    /* MAIN CONTENT */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .header { height: 80px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .content { padding: 32px; overflow-y: auto; flex: 1; }
     
-    .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    /* CARD & TABLE */
+    .card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 16px 24px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { font-size: 14px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    
+    /* BADGES DE MOVIMENTAÇÃO (ATUALIZADO PARA INCLUIR EXCLUSAO) */
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; display: inline-block; }
     .badge.entrada { background: rgba(16, 185, 129, 0.15); color: #a7f3d0; border: 1px solid var(--success); }
-    .badge.saida { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid var(--danger); }
+    .badge.saida { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid var(--warning); }
+    .badge.exclusao { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid var(--danger); }
+
+    /* TOAST NOTIFICATION */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; border-radius: 8px; font-weight: 500; font-size: 14px; display: none; align-items: center; gap: 12px; z-index: 1000; animation: slideIn 0.3s ease; }
+    .toast.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div>
-      <div class="brand"><i class="ph ph-package"></i> <span>StockControl</span></div>
-      <ul class="menu">
-        <li><a href="dashboard.html"><i class="ph ph-squares-four"></i> Visão Geral</a></li>
-        <li><a href="produtos.html"><i class="ph ph-cube"></i> Produtos</a></li>
-        <li><a href="categorias.html"><i class="ph ph-folders"></i> Categorias</a></li>
-        <li><a href="movimentacoes.html" class="active"><i class="ph ph-arrows-left-right"></i> Movimentações</a></li>
-      </ul>
+    <div class="logo">
+      <i class="ph-fill ph-package"></i>
+      StockControl
     </div>
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item"><i class="ph ph-squares-four"></i> Dashboard</a>
+      <a href="produtos.html" class="nav-item"><i class="ph ph-box-box"></i> Produtos</a>
+      <a href="categorias.html" class="nav-item"><i class="ph ph-tag"></i> Categorias</a>
+      <a href="movimentacoes.html" class="nav-item active"><i class="ph ph-arrows-left-right"></i> Movimentações</a>
+    </nav>
+    
     <div class="user-info">
-      <div><i class="ph ph-user-circle"></i> <span id="sessao-usuario">@operador</span></div>
-      <button class="btn-logout" onclick="sessionStorage.clear(); window.location.href='index.html';"><i class="ph ph-sign-out"></i></button>
+      <div class="user-details">
+        <i class="ph ph-user-circle"></i> 
+        <span id="sessao-usuario">@operador</span>
+      </div>
+      <button class="btn-logout" title="Sair do Sistema" onclick="fazerLogout()"><i class="ph ph-sign-out"></i></button>
     </div>
   </aside>
 
-  <main class="main-content">
-    <div class="header">
-      <h1>Histórico de Movimentações (Log de Auditoria)</h1>
-    </div>
-
-    <!-- Filtros de Busca -->
-    <div class="filters-row">
-      <input type="text" id="inputBusca" class="search-input" placeholder="Pesquisar por nome do produto..." oninput="filtrarTabela()"/>
-      <select id="selectTipo" class="filter-select" onchange="filtrarTabela()">
-        <option value="TODOS">Todos os tipos</option>
-        <option value="ENTRADA">Entradas</option>
-        <option value="SAIDA">Saídas</option>
-      </select>
-    </div>
-
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th width="8%">ID Reg.</th>
-            <th width="25%">Produto</th>
-            <th width="12%">Tipo</th>
-            <th width="10%">Qtd.</th>
-            <th width="25%">Motivo / Justificativa</th>
-            <th width="20%">Data/Hora & Operador</th>
-          </tr>
-        </thead>
-        <tbody id="tabela-movs">
-          <!-- Carregado dinamicamente -->
-        </tbody>
-      </table>
+  <main class="main">
+    <header class="header">
+      <h2>Histórico de Movimentações (Auditoria)</h2>
+    </header>
+    
+    <div class="content">
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>ID Mov</th>
+              <th>Data/Hora</th>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Operação</th>
+              <th>Qtd.</th>
+              <th>Operador</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            </tbody>
+        </table>
+      </div>
     </div>
   </main>
 
+  <div id="toast" class="toast"></div>
+
   <script>
-    if(!sessionStorage.getItem('usuarioId')) window.location.href = 'index.html';
-    document.getElementById('sessao-usuario').textContent = `@${sessionStorage.getItem('usuarioLogin')}`;
+    // --- AUTENTICAÇÃO ---
+    const operId = sessionStorage.getItem('usuarioId');
+    const operLogin = sessionStorage.getItem('usuarioLogin');
+    
+    if(!operId) {
+      window.location.href = 'index.html';
+    }
+    document.getElementById('sessao-usuario').textContent = `@${operLogin}`;
 
-    let dadosLocais = [];
+    function fazerLogout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
 
-    async function carregarHistorico() {
+    const API_MOVIMENTACOES = '/movimentacoes'; 
+
+    async function carregarMovimentacoes() {
       try {
-        const res = await fetch('/movimentacoes');
-        dadosLocais = await res.json();
-        filtrarTabela();
+        const res = await fetch(API_MOVIMENTACOES);
+        const data = await res.json();
+        renderTable(data);
       } catch (e) {
-        document.getElementById('tabela-movs').innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--danger);">Falha ao carregar registros de auditoria.</td></tr>';
+        mostrarToast('Erro ao buscar movimentações.', 'error');
       }
     }
 
-    function filtrarTabela() {
-      const termo = document.getElementById('inputBusca').value.toLowerCase();
-      const tipoSel = document.getElementById('selectTipo').value;
-      const tbody = document.getElementById('tabela-movs');
-      tbody.innerHTML = '';
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = ''; // Limpa a tabela antes de desenhar
 
-      const filtrados = dadosLocais.filter(m => {
-        // Blindagem contra produto nulo devido à regra SET NULL de exclusão
-        const nomeProd = m.produto ? (m.produto.nome || m.produto).toLowerCase() : 'produto excluído';
-        const tipoMov = (m.tipo || '').toUpperCase();
+      data.forEach(m => {
+        // --- 1. CONFIGURAÇÃO DA COR E TIPO DE OPERAÇÃO ---
+        let badgeClass = '';
+        let textoTipo = m.tipo;
+        let sinal = '';
+        let corQtd = '';
 
-        const bateNome = nomeProd.includes(termo);
-        const bateTipo = tipoSel === 'TODOS' || tipoMov === tipoSel;
-        return bateNome && bateTipo;
-      });
-
-      if(filtrados.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted);">Nenhum registro de movimentação encontrado.</td></tr>';
-        return;
-      }
-
-      // Renderiza as movimentações (as mais recentes aparecem no topo)
-      [...filtrados].reverse().forEach(m => {
-        const isEntrada = (m.tipo || '').toUpperCase() === 'ENTRADA';
-        const badgeClass = isEntrada ? 'badge entrada' : 'badge saida';
-        
-        // Exibição amigável para produtos excluídos da auditoria
-        const nomeProdExibicao = m.produto ? (m.produto.nome || m.produto) : '⚠️ Produto Removido (Histórico Preservado)';
-        const responsavel = m.usuario ? (m.usuario.login || m.usuario) : (m.usuario_login || 'Sistema');
-
-        let dataStr = 'Recente';
-        if (m.dataHora || m.data) {
-          const d = new Date(m.dataHora || m.data);
-          if (!isNaN(d)) dataStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+        if (m.tipo === 'ENTRADA') {
+            badgeClass = 'badge entrada';
+            sinal = '+';
+            corQtd = 'var(--success)';
+        } else if (m.tipo === 'SAIDA' || m.tipo === 'SAÍDA') {
+            badgeClass = 'badge saida';
+            textoTipo = 'SAÍDA';
+            sinal = '-';
+            corQtd = 'var(--warning)';
+        } else if (m.tipo === 'EXCLUSAO' || m.tipo === 'EXCLUSÃO') {
+            badgeClass = 'badge exclusao'; 
+            textoTipo = 'EXCLUSÃO';
+            sinal = '-';
+            corQtd = 'var(--danger)'; // Vermelho intenso para itens excluídos
         }
 
+        // --- 2. CONFIGURAÇÃO DO SNAPSHOT (HISTÓRICO) ---
+        // Se o banco trouxe o nomeProduto no snapshot, usa ele, senão tenta no objeto. 
+        // Se tudo falhar (já foi excluído e não salvou snapshot), avisa que foi removido.
+        const nomeProd = m.nomeProduto ? m.nomeProduto : (m.produto && m.produto.nome ? m.produto.nome : '⚠️ Produto Removido');
+        const nomeCat = m.nomeCategoria ? m.nomeCategoria : 'Sem Categoria';
+        
+        // Pega o operador (da mesma forma, valorizando o snapshot histórico primeiro)
+        const responsavel = m.nomeUsuario ? m.nomeUsuario : (m.usuario && m.usuario.login ? m.usuario.login : 'Sistema');
+
+        // --- 3. CONFIGURAÇÃO DA DATA ---
+        let dataStr = 'Recente';
+        if (m.dataHora) {
+          const d = new Date(m.dataHora);
+          if (!isNaN(d)) {
+            dataStr = d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+          }
+        }
+
+        // --- 4. DESENHO DA LINHA NA TABELA ---
         tbody.innerHTML += `
           <tr>
             <td>#${m.id}</td>
-            <td style="font-weight:600; color:${m.produto ? '#fff' : 'var(--muted)'};">${nomeProdExibicao}</td>
-            <td><span class="${badgeClass}">${m.tipo}</span></td>
-            <td style="font-weight:600; color:${isEntrada ? 'var(--success)' : 'var(--warning)'};">${isEntrada ? '+' : '-'}${m.quantidade}</td>
-            <td><span style="font-size:13px; color:#cbd5e1;">${m.motivo || 'Sem justificativa'}</span></td>
-            <td>
-              <div style="font-size:13px; color:#fff;">${dataStr}</div>
-              <div style="font-size:11px; color:var(--muted);">por @${responsavel}</div>
-            </td>
+            <td style="color: var(--muted); font-size: 13px;">${dataStr}</td>
+            <td style="font-weight:600; color:${m.produto && m.produto.id ? '#fff' : 'var(--muted)'};">${nomeProd}</td>
+            <td style="color: var(--muted);">${nomeCat}</td>
+            <td><span class="${badgeClass}">${textoTipo}</span></td>
+            <td style="font-weight:700; color:${corQtd};">${sinal}${m.quantidade}</td>
+            <td><span style="font-size:13px; color:var(--muted);"><i class="ph ph-user"></i> @${responsavel}</span></td>
           </tr>
         `;
       });
     }
 
-    window.onload = carregarHistorico;
+    function mostrarToast(txt, type) {
+      const el = document.getElementById('toast');
+      el.innerHTML = `<i class="ph-fill ph-warning-circle"></i> ${txt}`;
+      el.className = `toast ${type}`;
+      el.style.display = 'flex';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    window.onload = () => {
+      carregarMovimentacoes();
+    };
   </script>
 </body>
 </html>
